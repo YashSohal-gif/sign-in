@@ -183,16 +183,16 @@ document.addEventListener('DOMContentLoaded', () => {
             isValid = false;
         } else { clearError(passwordInput); }
 
-        const captchaVerified = document.getElementById('captcha-verified');
-        const captchaError = document.getElementById('captcha-error');
-        if (captchaVerified && captchaVerified.value !== 'true') {
-            if (captchaError) {
-                captchaError.textContent = 'Please complete the security swipe.';
-                captchaError.style.visibility = 'visible';
+        const cvEl = document.getElementById('captcha-verified');
+        const ceEl = document.getElementById('captcha-error');
+        if (cvEl && cvEl.value !== 'true') {
+            if (ceEl) {
+                ceEl.textContent = 'Please complete the puzzle.';
+                ceEl.style.visibility = 'visible';
             }
             isValid = false;
-        } else if (captchaError) {
-            captchaError.style.visibility = 'hidden';
+        } else if (ceEl) {
+            ceEl.style.visibility = 'hidden';
         }
 
         return isValid;
