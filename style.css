@@ -5,9 +5,7 @@
 }
 
 body {
-    /* Soothing dark slate background (Tailwind Slate 800 to 900) */
-    background: #0f172a;
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    background: #111827;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -114,8 +112,8 @@ form {
 
 /* Inputs */
 input {
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background-color: #0f172a;
+    border: 1px solid #334155;
     padding: 12px 15px;
     width: 100%;
     border-radius: 10px;
@@ -150,14 +148,10 @@ input:focus {
 
 /* Auth Container (The Base Card) */
 .auth-container {
-    background: rgba(30, 41, 59, 0.5); /* Slate 800 semi-transparent */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: #1e293b;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     position: relative;
-    /* Removed overflow: hidden so the overlay can pop out! */
     width: 1000px;
     max-width: 98vw;
     min-height: 680px;
@@ -232,8 +226,7 @@ input:focus {
 }
 
 .overlay {
-    /* Using the beautiful generated image with a subtle purple tint for text readability */
-    background: linear-gradient(rgba(30, 20, 60, 0.5), rgba(30, 20, 60, 0.6)), url('bg.jpg');
+    background: url('bg.jpg');
     background-size: cover;
     background-position: center;
     color: #ffffff;
@@ -317,14 +310,13 @@ input:focus {
     .mobile-only { display: block; }
     
     body {
-        /* Lighter dark overlay so the background image is perfectly sharp and vivid */
-        background: linear-gradient(rgba(15, 23, 42, 0.1), rgba(15, 23, 42, 0.3)), url('bg.jpg');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        display: block;
-        height: auto;
-        min-height: 100vh;
+    background: #111827;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
         overflow-y: auto;
         overflow-x: hidden;
     }
@@ -1190,14 +1182,13 @@ body.light-mode .theme-btn { color: #1e293b; background: rgba(0,0,0,0.1); }
     font-size: 14px;
 }
 .search-box input {
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    padding: 12px 15px;
     width: 100%;
-    box-sizing: border-box;
-    padding: 10px 14px 10px 40px !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 14px !important;
-    color: #f8fafc !important;
-    font-size: 13px !important;
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
+    color: #f8fafc;
     outline: none;
     transition: all 0.25s ease;
 }
@@ -1531,7 +1522,7 @@ body.light-mode .pw-toggle { color: #64748b !important; }
 }
 
 .overlay {
-    background: linear-gradient(135deg, rgba(30, 20, 60, 0.75), rgba(15, 23, 42, 0.85)), url('bg.jpg');
+    background: url('bg.jpg');
     background-size: cover;
     background-position: center;
     color: #FFFFFF;
