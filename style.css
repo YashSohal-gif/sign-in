@@ -328,6 +328,8 @@ input:focus {
         height: auto;
         border-radius: 0;
         background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
         border: none;
         box-shadow: none;
         overflow-x: hidden;
