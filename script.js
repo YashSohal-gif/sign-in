@@ -1,3 +1,65 @@
+// --- Auth0 Integration ---
+let auth0Client = null;
+
+window.loginWithAuth0 = function(e) {
+    if (e) e.preventDefault();
+    if (auth0Client) {
+        auth0Client.loginWithRedirect();
+    }
+};
+
+window.addEventListener('load', async () => {
+    if (typeof auth0 !== 'undefined') {
+        auth0Client = await auth0.createAuth0Client({
+            domain: 'dev-85qmobpjhtmnp5o4.us.auth0.com',
+            clientId: 'E9rgWOICuCfjAOCHkaroMSIDCd832aNX',
+            authorizationParams: { redirect_uri: location.origin }
+        });
+
+        if (location.search.includes('error=')) {
+            console.error('Auth0 error', location.search);
+            history.replaceState({}, document.title, location.pathname);
+        }
+
+        if (location.search.includes('code=') && location.search.includes('state=')) {
+            await auth0Client.handleRedirectCallback();
+            history.replaceState({}, document.title, location.pathname);
+        }
+
+        if (await auth0Client.isAuthenticated()) {
+            const user = await auth0Client.getUser();
+            
+            // Log in locally
+            const nsccUser = {
+                username: user.name || user.nickname || 'Social User',
+                email: user.email,
+                auth0: true
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(nsccUser));
+            
+            let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
+            if (!users.some(u => u.email === user.email)) {
+                users.push(nsccUser);
+                localStorage.setItem('nscc_users', JSON.stringify(users));
+            }
+            
+            // The existing DOMContentLoaded listener will handle showing the dashboard
+            // because currentUser is now in localStorage. But since we are in a load event
+            // which fires after DOMContentLoaded, we might need to manually trigger dashboard:
+            if (document.getElementById('auth-container')) {
+                document.getElementById('auth-container').style.display = 'none';
+                document.querySelector('.dashboard-container').style.display = 'block';
+                if (typeof renderDashboard === 'function') {
+                    renderDashboard();
+                }
+                const welcomeMsg = document.getElementById('welcome-msg');
+                if (welcomeMsg) welcomeMsg.textContent = \Welcome back, \!\;
+            }
+        }
+    }
+});
+// -------------------------
 document.addEventListener('DOMContentLoaded', () => {
     const authContainer = document.getElementById('auth-container');
     
@@ -92,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
+            if (auth0Client) auth0Client.logout({ logoutParams: { returnTo: location.origin } });
             localStorage.removeItem('currentUser');
             dashboardScreen.style.display = 'none';
             authContainer.style.display = 'block';
@@ -232,3 +295,4 @@ document.addEventListener('DOMContentLoaded', () => {
         return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
     }
 });
+
