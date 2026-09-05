@@ -308,9 +308,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Image Text Captcha Logic
     const captchaImages = [
-        { src: 'captcha1.png', answer: 'PRNU' },
-        { src: 'captcha2.jpg', answer: 'qGGphJD' },
-        { src: 'captcha3.jpg', answer: 'smzm' }
+        { src: 'captcha1.png',      answer: 'prnu' },
+        { src: 'captcha2.jpg',      answer: 'qggphjd' },
+        { src: 'captcha3.jpg',      answer: 'smzm' },
+        { src: 'images (1).png',    answer: 'agbf' },
+        { src: 'images (2).jpg',    answer: 'e3tj6hp' },
+        { src: 'images.jpg',        answer: 'qggphjd' },
+        { src: 'images (1).jpg',    answer: 'smzm' }
     ];
 
     let currentCaptchaIndex = Math.floor(Math.random() * captchaImages.length);
