@@ -308,13 +308,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Image Text Captcha Logic
     const captchaImages = [
-        { src: 'captcha1.png',      answer: 'prnu' },
-        { src: 'captcha2.jpg',      answer: 'qggphjd' },
-        { src: 'captcha3.jpg',      answer: 'smzm' },
-        { src: 'images (1).png',    answer: 'agbf' },
-        { src: 'images (2).jpg',    answer: 'e3tj6hp' },
-        { src: 'images.jpg',        answer: 'qggphjd' },
-        { src: 'images (1).jpg',    answer: 'smzm' }
+        { src: 'captcha1.png',                          answer: 'prnu' },
+        { src: 'captcha2.jpg',                          answer: 'qggphjd' },
+        { src: 'captcha3.jpg',                          answer: 'smzm' },
+        { src: 'images (1).png',                        answer: 'agbf' },
+        { src: 'images (2).jpg',                        answer: 'e3tj6hp' },
+        { src: 'images.jpg',                            answer: 'qggphjd' },
+        { src: 'images (1).jpg',                        answer: 'smzm' },
+        { src: 'Screenshot 2026-09-05 182910.png',      answer: 'inued' },
+        { src: 'Screenshot 2026-09-05 182934.png',      answer: 'only way to be sure' },
+        { src: 'Screenshot 2026-09-05 183009.png',      answer: 'zsjgxt' },
+        { src: 'Screenshot 2026-09-05 183016.png',      answer: '542089' },
+        { src: 'Screenshot 2026-09-05 183040.png',      answer: 'v6sqibcdt' }
     ];
 
     let currentCaptchaIndex = Math.floor(Math.random() * captchaImages.length);
