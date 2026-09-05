@@ -323,7 +323,7 @@ input:focus {
     }
     
     .auth-container {
-        width: 100%; /* Fixes alignment and horizontal scroll issues instead of 100vw */
+        width: 100vw; /* Force full viewport width to fix the 20px gap */
         min-height: 100vh;
         height: auto;
         border-radius: 0;
@@ -344,7 +344,7 @@ input:focus {
 
     /* Animate forms left and right using explicit 'left' properties to avoid width calculation bugs on mobile */
     .form-container {
-        width: 100%;
+        width: 100vw;
         height: auto;
         min-height: 100vh;
         position: absolute;
@@ -363,11 +363,11 @@ input:focus {
     }
     
     .auth-container.right-panel-active .sign-in-container {
-        left: -100%;
+        left: -100vw;
     }
     
     .sign-up-container {
-        left: 100%;
+        left: 100vw;
         z-index: 5;
     }
     
@@ -377,7 +377,7 @@ input:focus {
 
     /* Bottom Sheet Style Form */
     form {
-        width: 100%; /* Force exact screen width */
+        width: 100vw; /* Force exact screen width */
         background: rgba(15, 23, 42, 0.7); /* Semi-transparency */
         backdrop-filter: blur(15px); /* Frosted glass */
         -webkit-backdrop-filter: blur(15px);
