@@ -611,15 +611,84 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+
+    // Forgot Password Logic
+    const forgotPwdBtn = document.querySelector('.forgot-pwd');
+    if (forgotPwdBtn) {
+        forgotPwdBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            if (typeof Swal === 'undefined') {
+                alert("Please wait for the page to fully load.");
+                return;
+            }
+
+            const { value: email } = await Swal.fire({
+                title: 'Reset Password',
+                input: 'email',
+                inputLabel: 'Enter your registered email address',
+                inputPlaceholder: 'user@example.com',
+                showCancelButton: true,
+                confirmButtonColor: '#6366f1',
+                cancelButtonColor: '#334155',
+                background: '#1e293b',
+                color: '#f8fafc',
+                validationMessage: 'Please enter a valid email address'
+            });
+
+            if (email) {
+                let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
+                let userIndex = users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
+                
+                if (userIndex === -1) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Email not found',
+                        text: 'No account is registered with this email address.',
+                        background: '#1e293b',
+                        color: '#f8fafc',
+                        confirmButtonColor: '#6366f1'
+                    });
+                } else if (users[userIndex].auth0) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Social Login',
+                        text: 'This email is linked to a Google account. Please use Google to sign in.',
+                        background: '#1e293b',
+                        color: '#f8fafc',
+                        confirmButtonColor: '#6366f1'
+                    });
+                } else {
+                    const { value: newPassword } = await Swal.fire({
+                        title: 'New Password',
+                        input: 'password',
+                        inputLabel: 'Enter your new password',
+                        inputPlaceholder: 'New password',
+                        showCancelButton: true,
+                        confirmButtonColor: '#6366f1',
+                        cancelButtonColor: '#334155',
+                        background: '#1e293b',
+                        color: '#f8fafc',
+                        inputValidator: (value) => {
+                            if (!value) return 'You need to write something!';
+                            if (value.length < 6) return 'Password must be at least 6 characters!';
+                        }
+                    });
+
+                    if (newPassword) {
+                        users[userIndex].password = await hashPassword(newPassword);
+                        localStorage.setItem('nscc_users', JSON.stringify(users));
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Password Updated!',
+                            text: 'Your password has been successfully reset. You can now log in.',
+                            background: '#1e293b',
+                            color: '#f8fafc',
+                            confirmButtonColor: '#10b981'
+                        });
+                    }
+                }
+            }
+        });
+    }
 });
-
-
-
-
-
-
-
-
-
-
-
