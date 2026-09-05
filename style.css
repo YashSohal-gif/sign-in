@@ -881,17 +881,8 @@ input:focus {
     width: 100%;
 }
 .pw-wrap input { width: 100%; box-sizing: border-box; padding-right: 42px; }
-.pw-toggle {
-    position: absolute;
-    right: 8px; top: 50%;
-    transform: translateY(-50%);
-    background: none; border: none;
-    color: #94a3b8; cursor: pointer;
-    font-size: 17px; padding: 4px;
-    transition: color 0.3s;
-    transform-origin: center 60%; /* spin from handle base */
-}
-.pw-toggle:hover { color: #6366f1; }
+
+
 
 /* Spin animation when password revealed */
 @keyframes magnify-spin {
@@ -1334,20 +1325,27 @@ body.light-mode .theme-btn { color: #1e293b; background: rgba(0,0,0,0.1); }
 }
 .pw-toggle {
     position: absolute !important;
-    right: 12px !important;
+    right: 8px !important;
     top: 50% !important;
     transform: translateY(-50%);
-    background: transparent !important;
-    border: none !important;
-    color: #94a3b8 !important;
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+    color: #cbd5e1 !important;
     cursor: pointer !important;
-    font-size: 16px !important;
-    padding: 6px !important;
+    font-size: 14px !important;
+    padding: 0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     z-index: 10 !important;
-    transition: color 0.25s ease !important;
+    transition: all 0.25s ease !important;
+}
+.pw-toggle:hover {
+    background: #2d3748 !important;
+    color: #ffffff !important;
 }
 .pw-toggle:hover {
     color: #6366f1 !important;
@@ -1502,73 +1500,6 @@ body.light-mode .pw-toggle { color: #64748b !important; }
         opacity: 1;
         z-index: 5;
     }
-}
-
-.overlay-container {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: transform 0.6s ease-in-out;
-    z-index: 100;
-    border-radius: 0 20px 20px 0;
-}
-
-.auth-container.right-panel-active .overlay-container {
-    transform: translateX(-100%);
-    border-radius: 20px 0 0 20px;
-}
-
-.overlay {
-    background: url('bg.jpg');
-    background-size: cover;
-    background-position: center;
-    color: #FFFFFF;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-}
-
-.auth-container.right-panel-active .overlay {
-    transform: translateX(50%);
-}
-
-.overlay-panel {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 40px;
-    text-align: center;
-    top: 0;
-    height: 100%;
-    width: 50%;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-    box-sizing: border-box;
-}
-
-.overlay-left {
-    transform: translateX(-20%);
-}
-
-.auth-container.right-panel-active .overlay-left {
-    transform: translateX(0);
-}
-
-.overlay-right {
-    right: 0;
-    transform: translateX(0);
-}
-
-.auth-container.right-panel-active .overlay-right {
-    transform: translateX(20%);
 }
 
 button.ghost {
