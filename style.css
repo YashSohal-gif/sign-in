@@ -494,8 +494,89 @@ input:focus {
         min-height: 100vh;
         width: 100vw;
         max-width: 100%;
-        padding: 20px;
+        padding: 80px 15px 20px 15px; /* Added top padding so logout button doesn't overlap text */
     }
+    
+    .logout-btn {
+        top: 15px;
+        right: 15px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .welcome-banner h1 {
+        font-size: 24px;
+        line-height: 1.3;
+    }
+    
+    .leaderboard-header h2 {
+        font-size: 24px;
+    }
+    
+    /* Convert Desktop Table to Mobile Cards */
+    .leaderboard-style table, 
+    .leaderboard-style tbody, 
+    .leaderboard-style tr, 
+    .leaderboard-style td {
+        display: block;
+        width: 100%;
+    }
+    
+    .leaderboard-style thead {
+        display: none; /* Hide standard headers on mobile */
+    }
+    
+    .leaderboard-style tr {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        margin-bottom: 20px;
+        padding: 20px;
+        position: relative;
+    }
+    
+    .leaderboard-style td {
+        padding: 10px 0;
+        border: none !important;
+        text-align: left !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 15px;
+    }
+    
+    /* Clear desktop radii */
+    .leaderboard-style td:first-child, 
+    .leaderboard-style td:last-child {
+        border-radius: 0;
+    }
+    
+    /* Specific formatting for mobile card data */
+    .leaderboard-style td:nth-child(1) { /* Rank */
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 24px !important;
+        font-weight: 900;
+        opacity: 0.3;
+        padding: 0;
+    }
+    
+    .leaderboard-style td:nth-child(2) { /* Player */
+        padding-top: 0;
+        justify-content: flex-start;
+        padding-right: 40px; /* Space for rank */
+    }
+    
+    .leaderboard-style td:nth-child(3) { /* Class */
+        border-top: 1px solid rgba(255,255,255,0.05) !important;
+        margin-top: 10px;
+    }
+    
+    /* Add labels */
+    .leaderboard-style td:nth-child(3)::before { content: "Class"; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+    .leaderboard-style td:nth-child(4)::before { content: "Score"; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+    .leaderboard-style td:nth-child(5)::before { content: "Status"; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
 }
 
 .logout-btn {
