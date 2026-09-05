@@ -342,42 +342,42 @@ input:focus {
         display: none;
     }
 
-    /* Animate forms left and right like native screens */
+    /* Animate forms left and right using explicit 'left' properties to avoid width calculation bugs on mobile */
     .form-container {
         width: 100%;
         height: auto;
         min-height: 100vh;
         position: absolute;
         top: 0;
-        transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transition: left 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         background: transparent;
         pointer-events: auto !important;
         opacity: 1 !important;
         animation: none !important;
+        transform: none !important; /* Force override any desktop transforms */
     }
     
     .sign-in-container {
         left: 0;
-        transform: translateX(0);
         z-index: 5;
     }
     
     .auth-container.right-panel-active .sign-in-container {
-        transform: translateX(-100%);
+        left: -100%;
     }
     
     .sign-up-container {
         left: 100%;
-        transform: translateX(0);
         z-index: 5;
     }
     
     .auth-container.right-panel-active .sign-up-container {
-        transform: translateX(-100%);
+        left: 0;
     }
 
     /* Bottom Sheet Style Form */
     form {
+        width: 100%; /* Force exact screen width */
         background: rgba(15, 23, 42, 0.7); /* Semi-transparency */
         backdrop-filter: blur(15px); /* Frosted glass */
         -webkit-backdrop-filter: blur(15px);
