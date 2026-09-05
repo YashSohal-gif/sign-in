@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Sign Up & Login</title>
     <link rel="icon" type="image/jpeg" href="favicon.jpg">
-    <link rel="stylesheet" href="style.css?v=13">
+    <link rel="stylesheet" href="style.css?v=14">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 </head>
 <body>
@@ -46,11 +46,15 @@
                     <small class="error-msg" id="password-error"></small>
                 </div>
                 
-                <div class="captcha-container" id="captcha-container">
+                <div class="puzzle-captcha-container" id="puzzle-captcha">
+                    <div class="puzzle-image-box" id="puzzle-box">
+                        <div class="puzzle-hole" id="puzzle-hole"></div>
+                        <div class="puzzle-piece" id="puzzle-piece"></div>
+                    </div>
                     <div class="captcha-track">
                         <div class="captcha-fill" id="captcha-fill"></div>
-                        <div class="captcha-text" id="captcha-text">Swipe to verify</div>
-                        <div class="captcha-slider" id="captcha-slider"><i class="fas fa-chevron-right"></i></div>
+                        <div class="captcha-text" id="captcha-text">Slide to complete puzzle</div>
+                        <div class="captcha-slider" id="captcha-slider"><i class="fas fa-bars"></i></div>
                     </div>
                     <small class="error-msg" id="captcha-error"></small>
                     <input type="hidden" id="captcha-verified" value="false">
@@ -161,4 +165,5 @@
     <script src="script.js?v=12"></script>
 </body>
 </html>
+
 

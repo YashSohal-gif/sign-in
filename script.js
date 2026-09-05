@@ -305,7 +305,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // Captcha Logic
+
+
+    // Puzzle Captcha Logic
+    const puzzleCaptcha = document.getElementById('puzzle-captcha');
+    const puzzleHole = document.getElementById('puzzle-hole');
+    const puzzlePiece = document.getElementById('puzzle-piece');
     const captchaSlider = document.getElementById('captcha-slider');
     const captchaFill = document.getElementById('captcha-fill');
     const captchaText = document.getElementById('captcha-text');
@@ -313,18 +318,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const captchaTrack = document.querySelector('.captcha-track');
     const captchaError = document.getElementById('captcha-error');
 
-    if (captchaSlider) {
+    if (puzzleCaptcha && puzzleHole && puzzlePiece && captchaSlider) {
         let isDragging = false;
         let startX = 0;
-        let maxDrag = 0;
+        let maxDrag = 280 - 45; // Box width (280) - piece width (45)
+        let sliderMaxDrag = 280 - 38; // Track width (280) - slider width (34+4)
+        
+        // Generate random target X (between 100 and 230)
+        const targetX = Math.floor(Math.random() * 130) + 100;
+        puzzleHole.style.left = targetX + 'px';
+        
+        // Set puzzle piece background position so it matches the hole
+        // The hole is at left: targetX, top: 45px
+        puzzlePiece.style.backgroundPosition = \-\px -45px\;
+        puzzlePiece.style.left = '10px'; // Start position
 
         const startDrag = (e) => {
             if (captchaVerified.value === 'true') return;
             isDragging = true;
             startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-            maxDrag = captchaTrack.offsetWidth - captchaSlider.offsetWidth - 4;
+            sliderMaxDrag = captchaTrack.offsetWidth - captchaSlider.offsetWidth - 4;
+            maxDrag = 280 - 45; // Based on CSS
             captchaSlider.style.transition = 'none';
             captchaFill.style.transition = 'none';
+            puzzlePiece.style.transition = 'none';
             if (captchaError) captchaError.style.visibility = 'hidden';
         };
 
@@ -333,33 +350,49 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
             let delta = currentX - startX;
             if (delta < 0) delta = 0;
-            if (delta > maxDrag) delta = maxDrag;
+            if (delta > sliderMaxDrag) delta = sliderMaxDrag;
             
             captchaSlider.style.left = (delta + 2) + 'px';
             captchaFill.style.width = (delta + 20) + 'px';
             
-            if (delta >= maxDrag - 5) {
-                isDragging = false;
-                captchaVerified.value = 'true';
-                captchaSlider.innerHTML = '<i class="fas fa-check"></i>';
-                captchaSlider.classList.add('verified');
-                captchaText.textContent = 'Verified';
-                captchaText.style.color = '#fff';
-                captchaSlider.style.left = maxDrag + 2 + 'px';
-                captchaFill.style.width = '100%';
-                captchaSlider.style.transition = '0.3s';
-                captchaFill.style.transition = '0.3s';
-            }
+            // Move puzzle piece proportionally
+            const pieceLeft = 10 + (delta / sliderMaxDrag) * (maxDrag - 10);
+            puzzlePiece.style.left = pieceLeft + 'px';
         };
 
         const stopDrag = () => {
             if (!isDragging) return;
             isDragging = false;
-            if (captchaVerified.value !== 'true') {
+            
+            // Check if piece is within 5px of targetX
+            const currentPieceLeft = parseFloat(puzzlePiece.style.left);
+            const tolerance = 5;
+            
+            if (Math.abs(currentPieceLeft - targetX) <= tolerance) {
+                // Success!
+                captchaVerified.value = 'true';
+                puzzlePiece.style.left = targetX + 'px';
+                captchaSlider.innerHTML = '<i class="fas fa-check"></i>';
+                captchaSlider.classList.add('verified');
+                captchaText.textContent = 'Verified';
+                captchaText.style.color = '#fff';
+                
                 captchaSlider.style.transition = '0.3s';
                 captchaFill.style.transition = '0.3s';
+                puzzlePiece.style.transition = '0.3s';
+                
+                // Snap slider to equivalent position
+                const targetSliderLeft = ((targetX - 10) / (maxDrag - 10)) * sliderMaxDrag;
+                captchaSlider.style.left = (targetSliderLeft + 2) + 'px';
+                captchaFill.style.width = (targetSliderLeft + 20) + 'px';
+            } else {
+                // Fail, reset
+                captchaSlider.style.transition = '0.3s';
+                captchaFill.style.transition = '0.3s';
+                puzzlePiece.style.transition = '0.3s';
                 captchaSlider.style.left = '2px';
                 captchaFill.style.width = '0';
+                puzzlePiece.style.left = '10px';
             }
         };
 
@@ -377,6 +410,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
     }
 });
+
+
+
 
 
 

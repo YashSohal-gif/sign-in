@@ -723,21 +723,63 @@ input:focus {
 .class-silver { color: #94a3b8; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
 .class-bronze { color: #b45309; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
 
-/* Captcha Styles */
-.captcha-container {
+/* Puzzle Captcha Styles */
+.puzzle-captcha-container {
     width: 100%;
-    margin: 20px 0;
-    position: relative;
+    margin: 15px 0;
     user-select: none;
+    background: rgba(15, 23, 42, 0.4);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
-.captcha-track {
+.puzzle-image-box {
     width: 100%;
-    height: 45px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 25px;
+    max-width: 280px;
+    height: 140px;
+    margin: 0 auto 15px auto;
+    background-image: url('bg.jpg');
+    background-size: 280px 140px;
+    background-position: center;
+    border-radius: 8px;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.puzzle-hole {
+    width: 45px;
+    height: 45px;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 45px;
+    left: 200px;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.9);
+    /* Custom Jigsaw clip path! */
+    clip-path: polygon(0% 20%, 35% 20%, 35% 0%, 65% 0%, 65% 20%, 100% 20%, 100% 35%, 80% 35%, 80% 65%, 100% 65%, 100% 100%, 65% 100%, 65% 80%, 35% 80%, 35% 100%, 0% 100%, 0% 65%, 20% 65%, 20% 35%, 0% 35%);
+}
+.puzzle-piece {
+    width: 45px;
+    height: 45px;
+    background-image: url('bg.jpg');
+    background-size: 280px 140px;
+    position: absolute;
+    top: 45px;
+    left: 10px;
+    box-shadow: 0 0 10px rgba(255,255,255,0.8);
+    clip-path: polygon(0% 20%, 35% 20%, 35% 0%, 65% 0%, 65% 20%, 100% 20%, 100% 35%, 80% 35%, 80% 65%, 100% 65%, 100% 100%, 65% 100%, 65% 80%, 35% 80%, 35% 100%, 0% 100%, 0% 65%, 20% 65%, 20% 35%, 0% 35%);
+    /* Drop shadow hack for clip-path */
+    filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.8));
+}
+
+.captcha-track {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -748,22 +790,21 @@ input:focus {
     left: 0;
     height: 100%;
     width: 0;
-    background: #6366f1; /* Purple */
-    transition: width 0.3s;
+    background: #6366f1;
+    border-radius: 20px;
 }
 .captcha-text {
     position: relative;
     z-index: 1;
     color: #cbd5e1;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
 }
 .captcha-slider {
     position: absolute;
     top: 2px;
     left: 2px;
-    width: 39px;
-    height: 39px;
+    width: 34px;
+    height: 34px;
     background: #ffffff;
     border-radius: 50%;
     display: flex;
@@ -772,14 +813,11 @@ input:focus {
     color: #1e293b;
     cursor: grab;
     z-index: 2;
-    transition: left 0.3s, background 0.3s, color 0.3s;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-.captcha-slider:active {
-    cursor: grabbing;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 .captcha-slider.verified {
-    background: #10b981; /* Green */
+    background: #10b981;
     color: white;
     cursor: default;
 }
+
