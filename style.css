@@ -322,184 +322,107 @@ input:focus {
         overflow-y: auto;
     }
     
-    /* Disable the slider totally for mobile */
+    /* Hide desktop overlay completely */
+    .overlay-container {
+        display: none;
+    }
+
+    /* Animate forms left and right like native screens */
     .form-container {
-        width: 100%;
-        position: relative;
-        transition: none;
-        animation: none !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        transform: none !important;
-    }
-    
-    /* Toggling between forms via Display instead of Slider */
-    .sign-in-container { display: block; }
-    .auth-container.right-panel-active .sign-in-container { display: none; }
-    
-    .sign-up-container { display: none; }
-    .auth-container.right-panel-active .sign-up-container { display: block; }
-    
-    /* Mobile Banner Header */
-    .mobile-header {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 35vh;
-        background: linear-gradient(rgba(30, 20, 60, 0.3), rgba(30, 20, 60, 0.4)), url('bg.jpg');
-        background-size: cover;
-        background-position: center bottom;
-        color: white;
-        padding: 20px 30px;
-        position: relative;
-    }
-    
-    .mobile-header h1 {
-        font-size: 32px;
-        line-height: 1.2;
-        margin-top: 20px;
-        color: white;
-        text-align: left;
-    }
-    
-    .mobile-back {
+        width: 100vw;
+        height: auto;
+        min-height: 100vh;
         position: absolute;
-        top: 30px;
-        left: 20px;
-        background: white;
-        color: #333;
-        border: none;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0;
-        padding: 0;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    
-    .mobile-top-btn {
-        position: absolute;
-        top: 40px;
-        right: 20px;
+        top: 0;
+        transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         background: transparent;
-        color: white;
-        border: none;
-        box-shadow: none;
-        font-weight: 500;
-        text-transform: none;
-        padding: 0;
-        margin: 0;
+        pointer-events: auto !important;
+        opacity: 1 !important;
+        animation: none !important;
     }
     
-    /* White Card Form on Mobile */
+    .sign-in-container {
+        left: 0;
+        transform: translateX(0);
+        z-index: 5;
+    }
+    
+    .auth-container.right-panel-active .sign-in-container {
+        transform: translateX(-100vw);
+    }
+    
+    .sign-up-container {
+        left: 100vw;
+        transform: translateX(0);
+        z-index: 5;
+    }
+    
+    .auth-container.right-panel-active .sign-up-container {
+        transform: translateX(-100vw);
+    }
+
+    /* Style the forms to match desktop dark glass */
     form {
-        background: white;
-        border-top-left-radius: 30px;
-        border-top-right-radius: 30px;
-        margin-top: -30px; /* pull up over the header */
-        min-height: 70vh;
-        padding: 40px 30px;
-        justify-content: flex-start;
-        align-items: flex-start;
-        text-align: left;
-        box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+        background: rgba(30, 41, 59, 0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: none;
+        padding: 60px 30px;
+        align-items: center;
+        text-align: center;
+        min-height: 100vh;
+        margin-top: 0;
+        border-radius: 0;
     }
     
     .form-title {
-        color: #333;
-        font-size: 22px;
-        margin-bottom: 20px;
-        width: 100%;
+        color: #f8fafc;
+        font-size: 32px;
+        margin-bottom: 30px;
+        text-align: center;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
     
-    .input-group {
-        margin: 8px 0;
-        width: 100%;
+    .mobile-header {
+        display: none; /* Removed the top banner entirely for a cleaner glass look */
     }
     
     input {
-        background: #f9f9f9;
-        border: 1px solid #e0e0e0;
-        color: #333;
-        padding: 18px;
-        border-radius: 12px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #f8fafc;
+        padding: 16px;
     }
     
-    input::placeholder { color: #aaa; }
+    input::placeholder { color: rgba(255, 255, 255, 0.4); }
     
-    input:focus {
-        background: #fff;
-        border-color: #4ecdc4;
-        box-shadow: 0 0 10px rgba(78, 205, 196, 0.2);
+    input:focus { 
+        border-color: #6366f1;
+        background-color: rgba(255, 255, 255, 0.1); 
     }
     
     .submit-btn {
-        width: 100%;
-        background: #4ecdc4; /* Cyan/Teal like screenshot */
-        border-color: #4ecdc4;
-        padding: 16px;
-        font-size: 16px;
-        margin-top: 20px;
-        border-radius: 12px;
-        box-shadow: 0 8px 15px rgba(78, 205, 196, 0.3);
-    }
-    
-    .forgot-pwd {
-        color: #888;
-        font-size: 13px;
-        text-align: right;
-        width: 100%;
-        margin-top: 8px;
+        background-color: #6366f1;
+        border-color: #6366f1;
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
     }
     
     .toggle-text {
-        text-align: center;
-        color: #888;
-        width: 100%;
-        margin-top: auto;
-        padding-top: 40px;
+        color: #cbd5e1;
+        font-size: 14px;
+        margin-top: 40px;
     }
-    
     .toggle-text a {
-        color: #4ecdc4;
-        font-weight: bold;
+        color: #8b5cf6;
+        font-size: 16px;
     }
     
-    /* Social Buttons for Mobile */
-    .social-login-mobile {
-        width: 100%;
-        text-align: center;
-        margin-top: 30px;
-    }
-    
-    .social-login-mobile span {
-        color: #aaa;
-        margin-bottom: 20px;
-        display: block;
-    }
-    
-    .social-btns {
-        display: flex;
-        gap: 15px;
-    }
-    
+    .social-login-mobile span { color: #cbd5e1; }
     .social-btns button {
-        flex: 1;
-        background: #fff;
-        border: 1px solid #e0e0e0;
-        color: #333;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        text-transform: none;
-        margin: 0;
-        border-radius: 12px;
-        padding: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
     }
 }
 
