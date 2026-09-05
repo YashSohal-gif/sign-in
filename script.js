@@ -1,21 +1,16 @@
 // --- Auth0 Integration ---
 let auth0Client = null;
+let auth0Promise = null;
 
-window.loginWithAuth0 = function(e) {
-    if (e) e.preventDefault();
-    if (auth0Client) {
-        auth0Client.loginWithRedirect();
-    }
-};
-
-window.addEventListener('load', async () => {
-    if (typeof auth0 !== 'undefined') {
-        auth0Client = await auth0.createAuth0Client({
-            domain: 'dev-85qmobpjhtmnp5o4.us.auth0.com',
-            clientId: 'E9rgWOICuCfjAOCHkaroMSIDCd832aNX',
-            authorizationParams: { redirect_uri: location.origin }
-        });
-
+if (typeof auth0 !== 'undefined') {
+    auth0Promise = auth0.createAuth0Client({
+        domain: 'dev-85qmobpjhtmnp5o4.us.auth0.com',
+        clientId: 'E9rgWOICuCfjAOCHkaroMSIDCd832aNX',
+        authorizationParams: { redirect_uri: location.origin }
+    }).then(async (client) => {
+        auth0Client = client;
+        console.log("Auth0 Initialized successfully");
+        
         if (location.search.includes('error=')) {
             console.error('Auth0 error', location.search);
             history.replaceState({}, document.title, location.pathname);
@@ -28,8 +23,6 @@ window.addEventListener('load', async () => {
 
         if (await auth0Client.isAuthenticated()) {
             const user = await auth0Client.getUser();
-            
-            // Log in locally
             const nsccUser = {
                 username: user.name || user.nickname || 'Social User',
                 email: user.email,
@@ -44,21 +37,28 @@ window.addEventListener('load', async () => {
                 localStorage.setItem('nscc_users', JSON.stringify(users));
             }
             
-            // The existing DOMContentLoaded listener will handle showing the dashboard
-            // because currentUser is now in localStorage. But since we are in a load event
-            // which fires after DOMContentLoaded, we might need to manually trigger dashboard:
             if (document.getElementById('auth-container')) {
                 document.getElementById('auth-container').style.display = 'none';
                 document.querySelector('.dashboard-container').style.display = 'block';
-                if (typeof renderDashboard === 'function') {
-                    renderDashboard();
-                }
+                if (typeof renderDashboard === 'function') renderDashboard();
                 const welcomeMsg = document.getElementById('welcome-msg');
-                if (welcomeMsg) welcomeMsg.textContent = \Welcome back, \!\;
+                if (welcomeMsg) welcomeMsg.textContent = `Welcome back, ${nsccUser.username}!`;
             }
         }
+    }).catch(err => {
+        console.error("Failed to initialize Auth0", err);
+    });
+}
+
+window.loginWithAuth0 = async function(e) {
+    if (e) e.preventDefault();
+    if (auth0Promise) await auth0Promise;
+    if (auth0Client) {
+        auth0Client.loginWithRedirect();
+    } else {
+        alert("Auth0 failed to load. Check your internet connection or console for errors.");
     }
-});
+};
 // -------------------------
 document.addEventListener('DOMContentLoaded', () => {
     const authContainer = document.getElementById('auth-container');
@@ -295,4 +295,44 @@ document.addEventListener('DOMContentLoaded', () => {
         return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
     }
 });
+
+let auth0Client = null;
+
+// 1. Initialize Auth0
+async function initAuth0() {
+    auth0Client = await createAuth0Client({
+        domain: "https://sign-in-eta-wine.vercel.app/.auth0.com", // Get this from Auth0 Settings
+        clientId: "581387578808-esac9j9dav4mrrj850uilic2h2ohm15r.apps.googleusercontent.com",      // Get this from Auth0 Settings
+        authorizationParams: {
+            redirect_uri: window.location.origin
+        }
+    });
+
+    // 2. Check if the user just returned from logging in
+    if (location.search.includes("state=") && 
+        (location.search.includes("code=") || location.search.includes("error="))) {
+        await auth0Client.handleRedirectCallback();
+        window.history.replaceState({}, document.title, "/");
+    }
+
+    // 3. Check if user is logged in
+    const isAuthenticated = await auth0Client.isAuthenticated();
+    if (isAuthenticated) {
+        const user = await auth0Client.getUser();
+        console.log("Logged in user:", user);
+        
+        // Save to your localStorage to match your dashboard logic!
+        localStorage.setItem('currentUser', JSON.stringify({
+            username: user.name || user.nickname,
+            email: user.email
+        }));
+        
+        // Redirect to dashboard
+        window.location.href = "dashboard.html"; // Or call your renderDashboard() function
+    }
+}
+
+// Run init when page loads
+window.addEventListener('load', initAuth0);
+
 
