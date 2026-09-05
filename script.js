@@ -112,17 +112,35 @@ window.exportCSV = function() {
 })();
 
 // 6. Typing Animation on overlay text
+let typewriterTimer = null;
 function initTypewriter() {
     const el = document.getElementById('typing-text');
     if (!el) return;
+    if (typewriterTimer) clearTimeout(typewriterTimer);
     const texts = ['Hello, Friend!', 'Join Us Today!', 'Start Your Journey!'];
     let ti = 0, ci = 0, deleting = false;
+    
     function type() {
         const current = texts[ti];
-        el.textContent = deleting ? current.substring(0, ci--) : current.substring(0, ci++);
-        if (!deleting && ci > current.length) { deleting = true; setTimeout(type, 1200); return; }
-        if (deleting && ci < 0) { deleting = false; ti = (ti + 1) % texts.length; ci = 0; }
-        setTimeout(type, deleting ? 60 : 100);
+        if (deleting) {
+            el.innerHTML = escapeHTML(current.substring(0, ci--)) + '<span class="type-cursor">|</span>';
+            if (ci < 0) {
+                deleting = false;
+                ti = (ti + 1) % texts.length;
+                ci = 0;
+                typewriterTimer = setTimeout(type, 300);
+                return;
+            }
+            typewriterTimer = setTimeout(type, 40);
+        } else {
+            el.innerHTML = escapeHTML(current.substring(0, ci++)) + '<span class="type-cursor">|</span>';
+            if (ci > current.length) {
+                deleting = true;
+                typewriterTimer = setTimeout(type, 1500);
+                return;
+            }
+            typewriterTimer = setTimeout(type, 80);
+        }
     }
     type();
 }
@@ -213,14 +231,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const signInButton = document.getElementById('signIn');
 
     if (signUpButton) {
-        signUpButton.addEventListener('click', () => {
-            authContainer.classList.add("right-panel-active");
+        signUpButton.addEventListener('click', (e) => {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            if (authContainer) authContainer.classList.add("right-panel-active");
         });
     }
 
     if (signInButton) {
-        signInButton.addEventListener('click', () => {
-            authContainer.classList.remove("right-panel-active");
+        signInButton.addEventListener('click', (e) => {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            if (authContainer) authContainer.classList.remove("right-panel-active");
         });
     }
 
