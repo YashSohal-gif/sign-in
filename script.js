@@ -256,11 +256,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('password')?.addEventListener('input', e => checkStrength(e.target.value));
 
     // Real-time email validation
-    document.getElementById('email')?.addEventListener('input', e => {
-        const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+\$/.test(e.target.value);
-        e.target.classList.toggle('valid', valid && e.target.value.length > 0);
-        e.target.classList.toggle('invalid', !valid && e.target.value.length > 0);
-    });
+    const emailInput = document.getElementById('email');
+    if (emailInput) {
+        emailInput.addEventListener('input', e => {
+            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value);
+            e.target.classList.toggle('valid', valid);
+            e.target.classList.remove('invalid');
+        });
+        emailInput.addEventListener('blur', e => {
+            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value);
+            if (e.target.value.length > 0) {
+                e.target.classList.toggle('valid', valid);
+                e.target.classList.toggle('invalid', !valid);
+            }
+        });
+    }
 
     // Time-based greeting update
     const welcomeMsg = document.getElementById('welcome-message');
@@ -479,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { src: 'images.jpg',                            answer: 'qggphjd' },
         { src: 'images (1).jpg',                        answer: 'smzm' },
         { src: 'Screenshot 2026-09-05 182910.png',      answer: 'inued' },
-        { src: 'Screenshot 2026-09-05 183009.png',      answer: 'zsjgxt' },
+        { src: 'Screenshot 2026-09-05 183009.png',      answer: 'zsjcxt' },
         { src: 'Screenshot 2026-09-05 183016.png',      answer: '542089' },
         { src: 'Screenshot 2026-09-05 183040.png',      answer: 'v6sqibcdt' }
     ];
@@ -528,6 +538,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
     }
 });
+
 
 
 
