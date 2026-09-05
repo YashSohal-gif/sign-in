@@ -183,6 +183,18 @@ document.addEventListener('DOMContentLoaded', () => {
             isValid = false;
         } else { clearError(passwordInput); }
 
+        const captchaVerified = document.getElementById('captcha-verified');
+        const captchaError = document.getElementById('captcha-error');
+        if (captchaVerified && captchaVerified.value !== 'true') {
+            if (captchaError) {
+                captchaError.textContent = 'Please complete the security swipe.';
+                captchaError.style.visibility = 'visible';
+            }
+            isValid = false;
+        } else if (captchaError) {
+            captchaError.style.visibility = 'hidden';
+        }
+
         return isValid;
     }
 
@@ -291,8 +303,81 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
+
+    // Captcha Logic
+    const captchaSlider = document.getElementById('captcha-slider');
+    const captchaFill = document.getElementById('captcha-fill');
+    const captchaText = document.getElementById('captcha-text');
+    const captchaVerified = document.getElementById('captcha-verified');
+    const captchaTrack = document.querySelector('.captcha-track');
+    const captchaError = document.getElementById('captcha-error');
+
+    if (captchaSlider) {
+        let isDragging = false;
+        let startX = 0;
+        let maxDrag = 0;
+
+        const startDrag = (e) => {
+            if (captchaVerified.value === 'true') return;
+            isDragging = true;
+            startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            maxDrag = captchaTrack.offsetWidth - captchaSlider.offsetWidth - 4;
+            captchaSlider.style.transition = 'none';
+            captchaFill.style.transition = 'none';
+            if (captchaError) captchaError.style.visibility = 'hidden';
+        };
+
+        const doDrag = (e) => {
+            if (!isDragging) return;
+            const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            let delta = currentX - startX;
+            if (delta < 0) delta = 0;
+            if (delta > maxDrag) delta = maxDrag;
+            
+            captchaSlider.style.left = (delta + 2) + 'px';
+            captchaFill.style.width = (delta + 20) + 'px';
+            
+            if (delta >= maxDrag - 5) {
+                isDragging = false;
+                captchaVerified.value = 'true';
+                captchaSlider.innerHTML = '<i class="fas fa-check"></i>';
+                captchaSlider.classList.add('verified');
+                captchaText.textContent = 'Verified';
+                captchaText.style.color = '#fff';
+                captchaSlider.style.left = maxDrag + 2 + 'px';
+                captchaFill.style.width = '100%';
+                captchaSlider.style.transition = '0.3s';
+                captchaFill.style.transition = '0.3s';
+            }
+        };
+
+        const stopDrag = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            if (captchaVerified.value !== 'true') {
+                captchaSlider.style.transition = '0.3s';
+                captchaFill.style.transition = '0.3s';
+                captchaSlider.style.left = '2px';
+                captchaFill.style.width = '0';
+            }
+        };
+
+        captchaSlider.addEventListener('mousedown', startDrag);
+        captchaSlider.addEventListener('touchstart', startDrag, {passive: true});
+        
+        document.addEventListener('mousemove', doDrag);
+        document.addEventListener('touchmove', doDrag, {passive: true});
+        
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+    }
+
     function escapeHTML(str) {
         return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
     }
 });
+
+
+
 
