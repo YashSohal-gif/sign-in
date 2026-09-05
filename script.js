@@ -112,7 +112,7 @@ window.exportCSV = function() {
 })();
 
 // 6. Typing Animation on overlay text
-(function() {
+function initTypewriter() {
     const el = document.getElementById('typing-text');
     if (!el) return;
     const texts = ['Hello, Friend!', 'Join Us Today!', 'Start Your Journey!'];
@@ -125,7 +125,7 @@ window.exportCSV = function() {
         setTimeout(type, deleting ? 60 : 100);
     }
     type();
-})();
+}
 
 // 7. Time-based greeting
 function getGreeting() {
@@ -205,6 +205,7 @@ window.loginWithAuth0 = async function(e) {
 };
 // -------------------------
 document.addEventListener('DOMContentLoaded', () => {
+    initTypewriter();
     const authContainer = document.getElementById('auth-container');
     
     // Desktop Sliding Panel Logic
