@@ -376,27 +376,33 @@ input:focus {
         transform: translateX(-100%);
     }
 
-    /* Style the forms to match desktop dark theme but structure like the mockup */
+    /* Bottom Sheet Style Form */
     form {
-        background: rgba(15, 23, 42, 0.7); /* Restored semi-transparency */
-        backdrop-filter: blur(15px); /* Restored frosted glass ONLY on the form box */
+        background: rgba(15, 23, 42, 0.7); /* Semi-transparency */
+        backdrop-filter: blur(15px); /* Frosted glass */
         -webkit-backdrop-filter: blur(15px);
         box-shadow: 0 -15px 40px rgba(0,0,0,0.8);
-        padding: 50px 30px;
+        padding: 60px 30px 100px 30px; /* Extra bottom padding for scrolling */
         align-items: center;
         text-align: center;
-        min-height: 70vh; /* Form takes bottom 70% */
-        margin-top: 30vh; /* Leaves top 30% for the sharp background image */
-        border-top-left-radius: 40px; /* Big curved corners like mockup */
+        min-height: 50vh; /* Takes bottom half */
+        margin-top: 48vh; /* Pushes the form box down, leaving top 48% clear for the image */
+        border-top-left-radius: 40px; 
         border-top-right-radius: 40px;
+        position: relative; /* So the absolute title is positioned relative to this */
     }
     
     .form-title {
+        position: absolute;
+        top: -120px; /* Pulls the text OUT of the dark box and into the clear image area */
+        left: 0;
+        width: 100%;
         color: #f8fafc;
-        font-size: 32px;
-        margin-bottom: 30px;
+        font-size: 38px;
+        font-weight: 800;
         text-align: center;
-        text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+        margin: 0;
     }
     
     .mobile-header {
