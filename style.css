@@ -1345,7 +1345,7 @@ body.light-mode .theme-btn { color: #1e293b; background: rgba(0,0,0,0.1); }
     position: absolute !important;
     right: 12px !important;
     top: 50% !important;
-    transform: translateY(-50%) !important;
+    transform: translateY(-50%);
     background: transparent !important;
     border: none !important;
     color: #94a3b8 !important;

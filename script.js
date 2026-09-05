@@ -1,3 +1,7 @@
+function escapeHTML(str) {
+    if (!str) return '';
+    return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
+}
 
 // ============ NEW FEATURES JS ============
 
@@ -418,39 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
         users.push(user);
         localStorage.setItem('nscc_users', JSON.stringify(users));
     }
-        }
-
-        return isValid;
-    }
-
-    function showError(inputElement, message) {
-        const errorElement = document.getElementById(`${inputElement.id}-error`);
-        if (errorElement) {
-            errorElement.textContent = message;
-            errorElement.classList.add('visible');
-        }
-    }
-
-    function clearError(inputElement) {
-        const errorElement = document.getElementById(`${inputElement.id}-error`);
-        if (errorElement) {
-            errorElement.classList.remove('visible');
-        }
-    }
-
-    async function hashPassword(password) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    function saveUser(user) {
-        let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
-        users.push(user);
-        localStorage.setItem('nscc_users', JSON.stringify(users));
-    }
 
     function showDashboard() {
         if (authContainer) authContainer.style.display = 'none';
@@ -630,9 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function escapeHTML(str) {
-        return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
-    }
+
 });
 
 
