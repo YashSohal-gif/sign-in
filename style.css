@@ -323,7 +323,7 @@ input:focus {
     }
     
     .auth-container {
-        width: 100vw;
+        width: 100%; /* Fixes alignment and horizontal scroll issues instead of 100vw */
         min-height: 100vh;
         height: auto;
         border-radius: 0;
@@ -334,6 +334,7 @@ input:focus {
         box-shadow: none;
         overflow-x: hidden;
         overflow-y: auto;
+        position: relative;
     }
     
     /* Hide desktop overlay completely */
@@ -343,7 +344,7 @@ input:focus {
 
     /* Animate forms left and right like native screens */
     .form-container {
-        width: 100vw;
+        width: 100%;
         height: auto;
         min-height: 100vh;
         position: absolute;
@@ -362,24 +363,24 @@ input:focus {
     }
     
     .auth-container.right-panel-active .sign-in-container {
-        transform: translateX(-100vw);
+        transform: translateX(-100%);
     }
     
     .sign-up-container {
-        left: 100vw;
+        left: 100%;
         transform: translateX(0);
         z-index: 5;
     }
     
     .auth-container.right-panel-active .sign-up-container {
-        transform: translateX(-100vw);
+        transform: translateX(-100%);
     }
 
     /* Style the forms to match desktop dark theme but structure like the mockup */
     form {
-        background: rgba(15, 23, 42, 0.98); /* Solid dark, NO BLUR, keeps readability */
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+        background: rgba(15, 23, 42, 0.7); /* Restored semi-transparency */
+        backdrop-filter: blur(15px); /* Restored frosted glass ONLY on the form box */
+        -webkit-backdrop-filter: blur(15px);
         box-shadow: 0 -15px 40px rgba(0,0,0,0.8);
         padding: 50px 30px;
         align-items: center;
