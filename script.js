@@ -692,3 +692,73 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
+// Configure your SMTP settings
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // or your SMTP host
+  auth: {
+    user: 'your-email@gmail.com',
+    pass: 'your-app-password' // Use an App Password, not your actual password
+  }
+});
+
+app.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  
+  // 1. Find user in your database (pseudo-code)
+  const user = await findUserByEmail(email);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  // 2. Generate a secure random token
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  
+  // 3. Set expiration (e.g., 1 hour from now)
+  const expireTime = Date.now() + 3600000; 
+
+  // 4. Save token and expiration to the user's database record (pseudo-code)
+  await saveResetTokenToDatabase(user.id, resetToken, expireTime);
+
+  // 5. Create the reset link pointing to your frontend
+  const resetLink = `http://localhost:3000/reset-password?token=${resetToken}&id=${user.id}`;
+
+  // 6. Send the email
+  const mailOptions = {
+    from: 'your-email@gmail.com',
+    to: user.email,
+    subject: 'Password Reset Request',
+    text: `You requested a password reset. Click this link to reset your password: ${resetLink} \n\nIf you did not request this, please ignore this email. This link will expire in 1 hour.`
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: "Password reset link sent to your email." });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ message: "Failed to send email." });
+  }
+});
+
+app.post('/reset-password', async (req, res) => {
+  const { userId, token, newPassword } = req.body;
+
+  // 1. Fetch user and check token validity in your database (pseudo-code)
+  const user = await getUserAndResetToken(userId);
+  
+  if (!user || user.resetToken !== token || Date.now() > user.tokenExpiry) {
+    return res.status(400).json({ message: "Invalid or expired reset token." });
+  }
+
+  // 2. Hash the NEW password (using bcrypt)
+  // const bcrypt = require('bcrypt');
+  // const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  // 3. Update the user's password in the database and clear the token (pseudo-code)
+  await updateUserPasswordAndClearToken(userId, hashedPassword);
+
+  res.status(200).json({ message: "Password has been reset successfully." });
+});
