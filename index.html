@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Sign Up & Login</title>
     <link rel="icon" type="image/jpeg" href="favicon.jpg">
-    <link rel="stylesheet" href="style.css?v=16">
+    <link rel="stylesheet" href="style.css?v=18">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 </head>
 <body>
@@ -46,18 +46,15 @@
                     <small class="error-msg" id="password-error"></small>
                 </div>
                 
-                <div class="puzzle-captcha-container" id="puzzle-captcha">
-                    <div class="puzzle-image-box" id="puzzle-box">
-                        <div class="puzzle-hole" id="puzzle-hole"></div>
-                        <div class="puzzle-piece" id="puzzle-piece"></div>
+                <div class="captcha-container" id="captcha-container">
+                    <div class="captcha-img-row">
+                        <img id="captcha-img" src="captcha1.png" alt="captcha" />
+                        <button type="button" id="captcha-refresh" title="Refresh"><i class="fas fa-redo"></i></button>
                     </div>
-                    <div class="captcha-track">
-                        <div class="captcha-fill" id="captcha-fill"></div>
-                        <div class="captcha-text" id="captcha-text">Slide to complete puzzle</div>
-                        <div class="captcha-slider" id="captcha-slider"><i class="fas fa-bars"></i></div>
-                    </div>
+                    <input type="text" id="captcha-input" placeholder="Type the text above" autocomplete="off" />
                     <small class="error-msg" id="captcha-error"></small>
-                    <input type="hidden" id="captcha-verified" value="false">
+                    <input type="hidden" id="captcha-verified" value="false" />
+                    <input type="hidden" id="captcha-answer" value="" />
                 </div>
 
                 <button type="submit" class="submit-btn">Register</button>
