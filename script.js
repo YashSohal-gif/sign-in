@@ -1,16 +1,25 @@
 
 // ============ NEW FEATURES JS ============
 
-// 1. Show/Hide Password
+// 1. Show/Hide Password — Magnifying Glass Spin
 window.togglePw = function(id, btn) {
     const inp = document.getElementById(id);
     if (!inp) return;
+
+    // Remove old animation classes first
+    btn.classList.remove('spinning-show', 'spinning-hide');
+    void btn.offsetWidth; // force reflow to restart animation
+
     if (inp.type === 'password') {
         inp.type = 'text';
-        btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        btn.innerHTML = '<i class="fas fa-search-plus"></i>';
+        btn.classList.add('spinning-show');
+        btn.title = 'Hide password';
     } else {
         inp.type = 'password';
-        btn.innerHTML = '<i class="fas fa-eye"></i>';
+        btn.innerHTML = '<i class="fas fa-search"></i>';
+        btn.classList.add('spinning-hide');
+        btn.title = 'Show password';
     }
 };
 

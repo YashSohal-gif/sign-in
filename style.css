@@ -891,13 +891,37 @@ input:focus {
 .pw-wrap input { width: 100%; box-sizing: border-box; padding-right: 42px; }
 .pw-toggle {
     position: absolute;
-    right: 10px; top: 50%;
+    right: 8px; top: 50%;
     transform: translateY(-50%);
     background: none; border: none;
     color: #94a3b8; cursor: pointer;
-    font-size: 15px; padding: 0;
+    font-size: 17px; padding: 4px;
+    transition: color 0.3s;
+    transform-origin: center 60%; /* spin from handle base */
 }
 .pw-toggle:hover { color: #6366f1; }
+
+/* Spin animation when password revealed */
+@keyframes magnify-spin {
+    0%   { transform: translateY(-50%) rotate(0deg) scale(1); }
+    30%  { transform: translateY(-50%) rotate(180deg) scale(1.4); }
+    60%  { transform: translateY(-50%) rotate(320deg) scale(1.1); }
+    100% { transform: translateY(-50%) rotate(360deg) scale(1); }
+}
+@keyframes magnify-spin-back {
+    0%   { transform: translateY(-50%) rotate(0deg) scale(1); }
+    30%  { transform: translateY(-50%) rotate(-180deg) scale(1.4); }
+    60%  { transform: translateY(-50%) rotate(-320deg) scale(1.1); }
+    100% { transform: translateY(-50%) rotate(-360deg) scale(1); }
+}
+.pw-toggle.spinning-show {
+    animation: magnify-spin 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+    color: #6366f1;
+}
+.pw-toggle.spinning-hide {
+    animation: magnify-spin-back 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+    color: #94a3b8;
+}
 
 /* Password Strength Meter */
 .strength-bar {
