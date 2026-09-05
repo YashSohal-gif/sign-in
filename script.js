@@ -397,24 +397,91 @@ document.addEventListener('DOMContentLoaded', () => {
         users.push(user);
         localStorage.setItem('nscc_users', JSON.stringify(users));
     }
+        }
+
+        return isValid;
+    }
+
+    function showError(inputElement, message) {
+        const errorElement = document.getElementById(`${inputElement.id}-error`);
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.classList.add('visible');
+        }
+    }
+
+    function clearError(inputElement) {
+        const errorElement = document.getElementById(`${inputElement.id}-error`);
+        if (errorElement) {
+            errorElement.classList.remove('visible');
+        }
+    }
+
+    async function hashPassword(password) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function saveUser(user) {
+        let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
+        users.push(user);
+        localStorage.setItem('nscc_users', JSON.stringify(users));
+    }
 
     function showDashboard() {
         if (authContainer) authContainer.style.display = 'none';
         if (dashboardScreen) dashboardScreen.style.display = 'block';
         
         let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
-        let currentUserEmail = localStorage.getItem('currentUser');
+        let currentUserRaw = localStorage.getItem('currentUser');
         
-        // Find current user and their rank (1-indexed based on sign-up order)
-        let userIndex = users.findIndex(u => u.email === currentUserEmail);
+        let currentUserEmail = '';
+        let currentUserName = '';
         
-        if (userIndex !== -1) {
-            let currentUser = users[userIndex];
-            const welcomeMsg = document.getElementById('welcome-message');
-            const rankMsg = document.getElementById('rank-message');
-            
-            if (welcomeMsg) welcomeMsg.textContent = `\, \!`;
-            if (rankMsg) rankMsg.innerHTML = `You are member <strong>#${userIndex + 1}</strong>`;
+        if (currentUserRaw) {
+            if (currentUserRaw.startsWith('{')) {
+                try {
+                    let parsed = JSON.parse(currentUserRaw);
+                    currentUserEmail = parsed.email || '';
+                    currentUserName = parsed.username || parsed.name || '';
+                } catch(e) {
+                    currentUserEmail = currentUserRaw;
+                }
+            } else {
+                currentUserEmail = currentUserRaw;
+            }
+        }
+        
+        // Find user in users array
+        let userIndex = users.findIndex(u => u.email && currentUserEmail && u.email.toLowerCase() === currentUserEmail.toLowerCase());
+        let userObj = userIndex !== -1 ? users[userIndex] : null;
+        
+        if (!currentUserName && userObj) {
+            currentUserName = userObj.username;
+        }
+        if (!currentUserName && currentUserEmail) {
+            currentUserName = currentUserEmail.split('@')[0];
+        }
+        if (!currentUserName) {
+            currentUserName = 'Member';
+        }
+        
+        const welcomeMsg = document.getElementById('welcome-message');
+        const welcomeSub = document.getElementById('welcome-subtext');
+        const welcomeAvatar = document.getElementById('welcome-avatar');
+        const rankMsg = document.getElementById('rank-message');
+        
+        const greeting = typeof getGreeting === 'function' ? getGreeting() : 'Welcome';
+        if (welcomeMsg) welcomeMsg.textContent = `${greeting}, ${escapeHTML(currentUserName)}!`;
+        if (welcomeSub) welcomeSub.textContent = currentUserEmail ? currentUserEmail : 'Logged in successfully';
+        if (welcomeAvatar) welcomeAvatar.textContent = currentUserName.charAt(0).toUpperCase();
+        
+        if (rankMsg) {
+            let rankNum = userIndex !== -1 ? userIndex + 1 : 1;
+            rankMsg.innerHTML = `<i class="fas fa-trophy"></i> Member <strong>#${rankNum}</strong>`;
         }
         
         renderDashboard();
@@ -434,12 +501,19 @@ document.addEventListener('DOMContentLoaded', () => {
         let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
         const searchEl = document.getElementById('user-search');
         const query = searchEl ? searchEl.value.toLowerCase().trim() : '';
-        if (query) users = users.filter(u => u.username.toLowerCase().includes(query) || u.email.toLowerCase().includes(query));
+        
+        if (query) {
+            users = users.filter(u => 
+                (u.username && u.username.toLowerCase().includes(query)) || 
+                (u.email && u.email.toLowerCase().includes(query))
+            );
+        }
+        
         if (!userTbody) return;
         userTbody.innerHTML = '';
         
         if (users.length === 0) {
-            if (emptyState) emptyState.style.display = 'block';
+            if (emptyState) emptyState.style.display = 'flex';
             const wrapper = document.querySelector('.table-wrapper');
             if (wrapper) wrapper.style.display = 'none';
         } else {
@@ -449,35 +523,37 @@ document.addEventListener('DOMContentLoaded', () => {
             
             users.forEach((user, index) => {
                 const tr = document.createElement('tr');
-                const initial = user.username ? user.username.charAt(0).toUpperCase() : '?';
+                const uname = user.username || (user.email ? user.email.split('@')[0] : 'User');
+                const uemail = user.email || 'N/A';
+                const initial = uname.charAt(0).toUpperCase();
                 
                 // Generate consistent dummy data based on user rank
                 const classes = ['Grandmaster', 'Master', 'Diamond', 'Platinum', 'Gold', 'Silver', 'Bronze'];
                 const playerClass = classes[index % classes.length];
                 
-                // Calculate a fun dummy score (Highest rank gets highest score)
+                // Calculate score
                 const baseScore = 15000;
-                const score = baseScore - (index * 850) + (user.username.length * 25);
+                const score = baseScore - (index * 850) + (uname.length * 25);
                 
                 tr.innerHTML = `
-                    <td style="font-size: 18px; color: #fff;">#${index + 1}</td>
-                    <td>
+                    <td class="td-rank">#${index + 1}</td>
+                    <td class="td-member">
                         <div class="user-cell">
                             <div class="user-avatar">${initial}</div>
-                            ${escapeHTML(user.username)}
+                            <div class="user-info">
+                                <span class="user-name">${escapeHTML(uname)}</span>
+                                <span class="user-email-sub">${escapeHTML(uemail)}</span>
+                            </div>
                         </div>
                     </td>
-                    <td class="class-${playerClass.toLowerCase()}">${playerClass}</td>
-                    <td class="score-cell">${score.toLocaleString()} PTS</td>
-                    <td><span class="status-badge">Online</span></td>
+                    <td class="td-class"><span class="class-badge class-${playerClass.toLowerCase()}">${playerClass}</span></td>
+                    <td class="td-score"><span class="score-cell">${score.toLocaleString()} PTS</span></td>
+                    <td class="td-status"><span class="status-badge">Online</span></td>
                 `;
                 userTbody.appendChild(tr);
             });
         }
     }
-
-
-
 
     // Image Text Captcha Logic
     const captchaImages = [

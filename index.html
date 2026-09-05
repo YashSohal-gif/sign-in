@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Sign Up & Login</title>
     <link rel="icon" type="image/jpeg" href="favicon.jpg">
-    <link rel="stylesheet" href="style.css?v=24">
+    <link rel="stylesheet" href="style.css?v=30">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 </head>
 <body>
@@ -126,40 +126,77 @@
 
     <!-- Dashboard Screen -->
     <div class="dashboard-container" id="dashboard-screen" style="display: none;">
-        <div class="dash-top-bar"><button id="logout-btn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</button><button id="theme-toggle" class="theme-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></button></div>
-        
-        <div class="welcome-banner">
-            <h1 id="welcome-message">Welcome!</h1>
-            <p id="rank-message" class="rank-badge">You are member <strong>#1</strong></p>
+        <div class="dash-header-nav">
+            <div class="dash-brand">
+                <i class="fas fa-shield-alt brand-icon"></i>
+                <span>NSCC RECRUITMENT PORTAL</span>
+            </div>
+            <div class="dash-actions">
+                <button id="theme-toggle" class="action-btn theme-btn" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="action-btn export-btn" onclick="exportCSV()" title="Export User Data">
+                    <i class="fas fa-file-download"></i> <span>Export CSV</span>
+                </button>
+                <button id="logout-btn" class="action-btn logout-btn" title="Log Out">
+                    <i class="fas fa-sign-out-alt"></i> <span>Log Out</span>
+                </button>
+            </div>
         </div>
 
-        <div class="leaderboard-header">
-            <h2>USER DIRECTORY</h2>
-            <p>Recent Signups</p>
+        <div class="dash-welcome-card">
+            <div class="welcome-left">
+                <div class="user-avatar-lg" id="welcome-avatar">U</div>
+                <div class="welcome-text">
+                    <h1 id="welcome-message">Good Evening, Member!</h1>
+                    <p id="welcome-subtext" class="welcome-sub">Logged in successfully</p>
+                </div>
+            </div>
+            <div class="welcome-right">
+                <div id="rank-message" class="rank-pill">
+                    <i class="fas fa-trophy"></i> Member <strong>#1</strong>
+                </div>
+            </div>
         </div>
-        
-        <div class="dash-controls"><input type="text" id="user-search" placeholder="Search users..." oninput="renderDashboard()" /><button class="export-btn" onclick="exportCSV()"><i class="fas fa-download"></i> Export CSV</button></div><div class="table-wrapper leaderboard-style">
-            <table id="user-table">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Class</th>
-                        <th>Score</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="user-tbody">
-                    <!-- User rows injected here -->
-                </tbody>
-            </table>
+
+        <div class="leaderboard-section">
+            <div class="section-title-bar">
+                <div class="title-meta">
+                    <h2>USER DIRECTORY</h2>
+                    <span class="sub-heading">Registered Candidates & Activity</span>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="user-search" placeholder="Search members..." oninput="renderDashboard()" />
+                </div>
+            </div>
+
+            <div class="table-wrapper leaderboard-style">
+                <table id="user-table">
+                    <thead>
+                        <tr>
+                            <th class="th-rank">RANK</th>
+                            <th class="th-member">MEMBER</th>
+                            <th class="th-class">TIER</th>
+                            <th class="th-score">SCORE</th>
+                            <th class="th-status">STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-tbody">
+                        <!-- User rows injected here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <i class="fas fa-users-slash empty-icon"></i>
+                <p>No registered candidates found.</p>
+            </div>
         </div>
-        <div id="empty-state" class="empty-state">No users signed up yet.</div>
     </div>
 
     <!-- Added ?v=11 to force browser to ignore cached javascript -->
     <script src="https://cdn.auth0.com/js/auth0-spa-js/2.18/auth0-spa-js.production.js"></script>
-    <script src="script.js?v=12"></script>
+    <script src="script.js?v=30"></script>
 <canvas id="particles-canvas"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </body>
