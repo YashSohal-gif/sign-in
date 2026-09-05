@@ -206,9 +206,18 @@ if (typeof auth0 !== 'undefined') {
             if (document.getElementById('auth-container')) {
                 document.getElementById('auth-container').style.display = 'none';
                 document.querySelector('.dashboard-container').style.display = 'block';
+                
+                const currentUserName = nsccUser.username || 'Member';
+                const welcomeMsg = document.getElementById('welcome-message');
+                const welcomeSub = document.getElementById('welcome-subtext');
+                const welcomeAvatar = document.getElementById('welcome-avatar');
+                const greeting = typeof getGreeting === 'function' ? getGreeting() : 'Welcome';
+                
+                if (welcomeMsg) welcomeMsg.textContent = `${greeting}, ${currentUserName}!`;
+                if (welcomeSub) welcomeSub.textContent = nsccUser.email || 'Logged in successfully';
+                if (welcomeAvatar) welcomeAvatar.textContent = currentUserName.charAt(0).toUpperCase();
+                
                 if (typeof renderDashboard === 'function') renderDashboard();
-                const welcomeMsg = document.getElementById('welcome-msg');
-                if (welcomeMsg) welcomeMsg.textContent = `Welcome back, ${nsccUser.username}!`;
             }
         }
     }).catch(err => {
