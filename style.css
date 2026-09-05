@@ -461,11 +461,11 @@ input:focus {
     background: rgba(30, 41, 59, 0.8);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-radius: 30px;
+    border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 15px 35px rgba(0,0,0,0.3);
     padding: 60px; /* Increased padding */
-    width: 1400px; /* Massively increased width */
+    width: 85px; /* Massively increased width */
     max-width: 95vw;
     min-height: 85vh; /* Makes it tall */
     position: relative;
