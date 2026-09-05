@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Set puzzle piece background position so it matches the hole
         // The hole is at left: targetX, top: 45px
-        puzzlePiece.style.backgroundPosition = \-\px -45px\;
+        puzzlePiece.style.backgroundPosition = `-${targetX}px -45px`;
         puzzlePiece.style.left = '10px'; // Start position
 
         const startDrag = (e) => {
