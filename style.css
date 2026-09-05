@@ -1161,7 +1161,7 @@ body.light-mode .theme-btn { color: #1e293b; background: rgba(0,0,0,0.1); }
 }
 .search-box .search-icon {
     position: absolute;
-    left: 14px;
+    right: 14px;
     top: 50%;
     transform: translateY(-50%);
     color: #64748b;
