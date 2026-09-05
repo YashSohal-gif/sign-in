@@ -303,16 +303,15 @@ input:focus {
 }
 
 /* ---------------------------------------------------- */
-/* RESPONSIVE MOBILE LAYOUT - Target screenshot style   */
+/* RESPONSIVE MOBILE LAYOUT                             */
 /* ---------------------------------------------------- */
 @media (max-width: 768px) {
     .desktop-only { display: none !important; }
-    .mobile-only { display: block; }
+    .mobile-only  { display: block; }
 
     body {
         background: #0f172a;
         display: block;
-        height: auto;
         min-height: 100vh;
         overflow-y: auto;
         overflow-x: hidden;
@@ -324,30 +323,28 @@ input:focus {
         height: auto;
         border-radius: 0;
         background: transparent;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
         border: none;
         box-shadow: none;
-        overflow: visible;
+        overflow: hidden;
         position: relative;
-        padding: 0;
     }
 
     .overlay-container { display: none !important; }
 
+    /* ---- Sliding panels ---- */
     .form-container {
         width: 100vw;
         min-height: 100vh;
         position: absolute;
         top: 0;
         left: 0;
-        transition: left 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        display: block;
+        background: #0f172a;
         pointer-events: auto !important;
         opacity: 1 !important;
         animation: none !important;
         transform: none !important;
-        display: block;
-        background: url("bg.jpg") top center / 100% 250px no-repeat, #0f172a;
+        transition: left 0.45s ease-in-out;
     }
 
     .sign-in-container  { left: 0;     z-index: 5; }
@@ -357,42 +354,53 @@ input:focus {
 
     .mobile-header { display: none; }
 
+    /* ---- ROUNDED IMAGE CARD at top ---- */
+    .form-container::before {
+        content: "";
+        display: block;
+        width: calc(100vw - 32px);
+        height: 260px;
+        margin: 16px 16px 0 16px;
+        background: url("bg.jpg") center / cover no-repeat;
+        border-radius: 22px;
+    }
+
+    /* ---- Title overlaps lower part of image ---- */
     .form-title {
         display: block;
         width: 100%;
         text-align: center;
         color: #ffffff;
-        font-size: 34px;
+        font-size: 36px;
         font-weight: 800;
-        text-shadow: 0 2px 16px rgba(0,0,0,0.9);
-        margin: 0;
-        padding: 150px 20px 18px 20px;
+        text-shadow: 0 3px 18px rgba(0,0,0,0.9);
+        margin: -55px 0 0 0;
+        padding: 0 16px;
+        position: relative;
+        z-index: 10;
         box-sizing: border-box;
     }
 
+    /* ---- Dark FORM CARD below image ---- */
     form {
-        width: 100%;
-        margin: 0;
+        width: calc(100vw - 32px);
+        margin: 16px 16px 30px 16px;
         background: #1a2236;
-        border-radius: 28px 28px 0 0;
-        border: none;
-        border-top: 1px solid rgba(255,255,255,0.08);
-        box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
-        padding: 28px 22px 36px 22px;
+        border-radius: 22px;
+        border: 1px solid rgba(255,255,255,0.07);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        padding: 28px 20px 24px 20px;
         text-align: center;
-        position: relative;
-        z-index: 3;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: relative;
+        z-index: 5;
+        overflow: visible;
     }
 
-    .input-group {
-        width: 100%;
-        margin: 7px 0;
-        position: relative;
-    }
+    .input-group { width: 100%; margin: 7px 0; position: relative; }
 
     input {
         background-color: rgba(255, 255, 255, 0.07);
@@ -404,20 +412,14 @@ input:focus {
         width: 100%;
         box-sizing: border-box;
     }
-
-    input::placeholder { color: rgba(255, 255, 255, 0.35); }
+    input::placeholder { color: rgba(255,255,255,0.35); }
     input:focus {
         border-color: #6366f1;
-        background-color: rgba(255, 255, 255, 0.1);
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        background-color: rgba(255,255,255,0.1);
+        box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
     }
 
-    a.forgot-pwd {
-        color: #94a3b8;
-        font-size: 13px;
-        margin: 12px 0 4px 0;
-        display: block;
-    }
+    a.forgot-pwd { color: #94a3b8; font-size: 13px; margin: 12px 0 4px 0; display: block; }
 
     button[type="submit"], .submit-btn {
         width: 100%;
@@ -429,15 +431,14 @@ input:focus {
         font-weight: 800;
         letter-spacing: 2px;
         color: #fff;
-        margin-top: 16px;
-        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        margin-top: 14px;
+        box-shadow: 0 8px 20px rgba(99,102,241,0.4);
         cursor: pointer;
     }
 
     .social-login-mobile { width: 100%; margin-top: 14px; }
-    .social-login-mobile > span {
-        color: #94a3b8; font-size: 12px; display: block; margin-bottom: 10px;
-    }
+    .social-login-mobile > span { color: #94a3b8; font-size: 12px; display: block; margin-bottom: 10px; }
+
     .social-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; }
     .social-btns button {
         width: 100%;
@@ -460,6 +461,7 @@ input:focus {
 
     .toggle-text { color: #94a3b8; font-size: 13px; margin-top: 20px; display: block; width: 100%; }
     .toggle-text a { color: #818cf8; font-weight: 700; font-size: 13px; text-decoration: none; }
+
     .social-container { display: none !important; }
     .strength-bar { width: 100%; }
 }
