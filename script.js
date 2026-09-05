@@ -547,7 +547,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </td>
                     <td class="td-class"><span class="class-badge class-${playerClass.toLowerCase()}">${playerClass}</span></td>
-                    <td class="td-score"><span class="score-cell">${score.toLocaleString()} PTS</span></td>
                     <td class="td-status"><span class="status-badge">Online</span></td>
                 `;
                 userTbody.appendChild(tr);
