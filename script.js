@@ -316,7 +316,6 @@ document.addEventListener('DOMContentLoaded', () => {
         { src: 'images.jpg',                            answer: 'qggphjd' },
         { src: 'images (1).jpg',                        answer: 'smzm' },
         { src: 'Screenshot 2026-09-05 182910.png',      answer: 'inued' },
-        { src: 'Screenshot 2026-09-05 182934.png',      answer: 'only way to be sure' },
         { src: 'Screenshot 2026-09-05 183009.png',      answer: 'zsjgxt' },
         { src: 'Screenshot 2026-09-05 183016.png',      answer: '542089' },
         { src: 'Screenshot 2026-09-05 183040.png',      answer: 'v6sqibcdt' }
