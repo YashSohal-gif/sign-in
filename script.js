@@ -1,3 +1,138 @@
+
+// ============ NEW FEATURES JS ============
+
+// 1. Show/Hide Password
+window.togglePw = function(id, btn) {
+    const inp = document.getElementById(id);
+    if (!inp) return;
+    if (inp.type === 'password') {
+        inp.type = 'text';
+        btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+    } else {
+        inp.type = 'password';
+        btn.innerHTML = '<i class="fas fa-eye"></i>';
+    }
+};
+
+// 2. Password Strength Meter
+function checkStrength(val) {
+    const fill = document.getElementById('strength-fill');
+    const label = document.getElementById('strength-label');
+    if (!fill || !label) return;
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    const levels = [
+        { pct: '0%',   color: 'transparent', text: '' },
+        { pct: '25%',  color: '#ef4444',      text: 'Weak' },
+        { pct: '50%',  color: '#f59e0b',      text: 'Fair' },
+        { pct: '75%',  color: '#3b82f6',      text: 'Good' },
+        { pct: '100%', color: '#10b981',      text: 'Strong' }
+    ];
+    const lvl = levels[score];
+    fill.style.width = lvl.pct;
+    fill.style.background = lvl.color;
+    label.textContent = lvl.text;
+    label.style.color = lvl.color;
+}
+
+// 3. Dark/Light Mode Toggle
+window.toggleTheme = function() {
+    document.body.classList.toggle('light-mode');
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.innerHTML = document.body.classList.contains('light-mode')
+        ? '<i class="fas fa-sun"></i>'
+        : '<i class="fas fa-moon"></i>';
+    localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+};
+// Restore saved theme
+if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light-mode');
+}
+
+// 4. Export CSV
+window.exportCSV = function() {
+    const users = JSON.parse(localStorage.getItem('nscc_users')) || [];
+    if (!users.length) return alert('No users to export!');
+    const header = 'Rank,Username,Email,Joined\n';
+    const rows = users.map((u, i) => `${i+1},${u.username},${u.email},${u.id || ''}`).join('\n');
+    const blob = new Blob([header + rows], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'nscc_users.csv';
+    a.click();
+};
+
+// 5. Particle Stars Background
+(function() {
+    const canvas = document.getElementById('particles-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    for (let i = 0; i < 120; i++) {
+        stars.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            r: Math.random() * 1.5 + 0.3,
+            speed: Math.random() * 0.3 + 0.1,
+            opacity: Math.random()
+        });
+    }
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(s => {
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(167,139,250,${s.opacity})`;
+            ctx.fill();
+            s.y -= s.speed;
+            s.opacity = 0.3 + 0.7 * Math.abs(Math.sin(Date.now() / 1000 + s.x));
+            if (s.y < 0) s.y = window.innerHeight;
+        });
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+
+// 6. Typing Animation on overlay text
+(function() {
+    const el = document.getElementById('typing-text');
+    if (!el) return;
+    const texts = ['Hello, Friend!', 'Join Us Today!', 'Start Your Journey!'];
+    let ti = 0, ci = 0, deleting = false;
+    function type() {
+        const current = texts[ti];
+        el.textContent = deleting ? current.substring(0, ci--) : current.substring(0, ci++);
+        if (!deleting && ci > current.length) { deleting = true; setTimeout(type, 1200); return; }
+        if (deleting && ci < 0) { deleting = false; ti = (ti + 1) % texts.length; ci = 0; }
+        setTimeout(type, deleting ? 60 : 100);
+    }
+    type();
+})();
+
+// 7. Time-based greeting
+function getGreeting() {
+    const h = new Date().getHours();
+    if (h < 12) return 'Good Morning';
+    if (h < 17) return 'Good Afternoon';
+    return 'Good Evening';
+}
+
+// 8. Confetti on successful signup
+function fireConfetti() {
+    if (typeof confetti === 'undefined') return;
+    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#6366f1','#8b5cf6','#a78bfa','#fff'] });
+}
+
+// =========================================
 // --- Auth0 Integration ---
 let auth0Client = null;
 let auth0Promise = null;
@@ -109,6 +244,21 @@ document.addEventListener('DOMContentLoaded', () => {
         showDashboard();
     }
 
+    document.getElementById('password')?.addEventListener('input', e => checkStrength(e.target.value));
+
+    // Real-time email validation
+    document.getElementById('email')?.addEventListener('input', e => {
+        const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+\$/.test(e.target.value);
+        e.target.classList.toggle('valid', valid && e.target.value.length > 0);
+        e.target.classList.toggle('invalid', !valid && e.target.value.length > 0);
+    });
+
+    // Time-based greeting update
+    const welcomeMsg = document.getElementById('welcome-message');
+    if (welcomeMsg && welcomeMsg.textContent === 'Welcome!') {
+        welcomeMsg.textContent = getGreeting() + '!';
+    }
+
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -133,6 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Auto login after signup
             localStorage.setItem('currentUser', newUser.email);
             showDashboard();
+            fireConfetti();
         }
     });
 
@@ -145,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (user) {
             localStorage.setItem('currentUser', user.email);
+            localStorage.setItem('lastLogin', new Date().toLocaleString());
             showDashboard();
             loginForm.reset();
         } else {
@@ -242,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const welcomeMsg = document.getElementById('welcome-message');
             const rankMsg = document.getElementById('rank-message');
             
-            if (welcomeMsg) welcomeMsg.textContent = `Welcome back, ${escapeHTML(currentUser.username)}!`;
+            if (welcomeMsg) welcomeMsg.textContent = `\, \!`;
             if (rankMsg) rankMsg.innerHTML = `You are member <strong>#${userIndex + 1}</strong>`;
         }
         
@@ -261,7 +413,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const userTbody = document.getElementById('user-tbody');
         const emptyState = document.getElementById('empty-state');
         let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
-        
+        const searchEl = document.getElementById('user-search');
+        const query = searchEl ? searchEl.value.toLowerCase().trim() : '';
+        if (query) users = users.filter(u => u.username.toLowerCase().includes(query) || u.email.toLowerCase().includes(query));
         if (!userTbody) return;
         userTbody.innerHTML = '';
         
@@ -365,6 +519,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
     }
 });
+
+
+
 
 
 
