@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Sign Up & Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+</head>
+<body>
+    <!-- The Login/Signup Screen -->
+    <div class="auth-container" id="auth-container">
+        <!-- Sign Up Form -->
+        <div class="form-container sign-up-container">
+            <!-- Mobile Header (Hidden on Desktop) -->
+            <div class="mobile-header">
+                <button type="button" class="mobile-back" id="mobile-back-to-login"><i class="fas fa-chevron-left"></i></button>
+                <h1>Create your<br>account</h1>
+                <button type="button" class="mobile-top-btn" id="mobile-top-signin">Sign in</button>
+            </div>
+            
+            <form id="signup-form">
+                <h2 class="desktop-only">Create Account</h2>
+                <div class="social-container desktop-only">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span class="desktop-only">or use your email for registration</span>
+                
+                <h3 class="mobile-only form-title">Register</h3>
+                
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="Username" />
+                    <small class="error-msg" id="username-error"></small>
+                </div>
+                
+                <div class="input-group">
+                    <input type="email" id="email" placeholder="Email" />
+                    <small class="error-msg" id="email-error"></small>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Password" />
+                    <small class="error-msg" id="password-error"></small>
+                </div>
+                
+                <button type="submit" class="submit-btn">Register</button>
+                
+                <p class="mobile-only toggle-text">Already have an account? <a href="#" id="mobile-go-login">Sign in</a></p>
+            </form>
+        </div>
+        
+        <!-- Login Form -->
+        <div class="form-container sign-in-container">
+            <!-- Mobile Header (Hidden on Desktop) -->
+            <div class="mobile-header">
+                <button type="button" class="mobile-back" style="visibility: hidden;"><i class="fas fa-chevron-left"></i></button>
+                <h1>Sign in to<br>Continue</h1>
+                <button type="button" class="mobile-top-btn" id="mobile-top-signup">Sign up</button>
+            </div>
+            
+            <form id="login-form">
+                <h2 class="desktop-only">Sign in</h2>
+                <div class="social-container desktop-only">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span class="desktop-only">or use your account</span>
+                
+                <h3 class="mobile-only form-title">Sign in</h3>
+                
+                <div class="input-group">
+                    <input type="email" id="login-email" placeholder="Email" required />
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="login-password" placeholder="Password" required />
+                </div>
+                
+                <a href="#" class="forgot-pwd">Forgot your password?</a>
+                <button type="submit" class="submit-btn">Sign In</button>
+                
+                <!-- Social Login specifically styled for Mobile -->
+                <div class="mobile-only social-login-mobile">
+                    <span>or continue with</span>
+                    <div class="social-btns">
+                        <button type="button"><i class="fab fa-google"></i> Google</button>
+                        <button type="button"><i class="fab fa-apple"></i> Apple</button>
+                    </div>
+                </div>
+                
+                <p class="mobile-only toggle-text">Don't have an account? <a href="#" id="mobile-go-signup">Sign up</a></p>
+            </form>
+        </div>
+        
+        <!-- Sliding Overlay (Desktop Only) -->
+        <div class="overlay-container desktop-only">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h2>Welcome Back!</h2>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h2>Hello, Friend!</h2>
+                    <p>Enter your personal details and start your journey with us</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div class="dashboard-container" id="dashboard-screen" style="display: none;">
+        <button id="logout-btn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+        
+        <div class="welcome-banner">
+            <h1 id="welcome-message">Welcome!</h1>
+            <p id="rank-message" class="rank-badge">You are member <strong>#1</strong></p>
+        </div>
+
+        <div class="leaderboard-header">
+            <h2>USER DIRECTORY</h2>
+            <p>Recent Signups</p>
+        </div>
+        
+        <div class="table-wrapper leaderboard-style">
+            <table id="user-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Class</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="user-tbody">
+                    <!-- User rows injected here -->
+                </tbody>
+            </table>
+        </div>
+        <div id="empty-state" class="empty-state">No users signed up yet.</div>
+    </div>
+
+    <!-- Added ?v=2 to force browser to ignore cached javascript -->
+    <script src="script.js?v=2"></script>
+</body>
+</html>
