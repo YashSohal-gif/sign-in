@@ -353,7 +353,11 @@ input:focus {
         pointer-events: auto !important;
         opacity: 1 !important;
         animation: none !important;
-        transform: none !important; /* Force override any desktop transforms */
+        transform: none !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
     
     .sign-in-container {
@@ -385,24 +389,21 @@ input:focus {
         padding: 50px 30px;
         align-items: center;
         text-align: center;
-        min-height: auto; 
-        margin-top: 45vh; /* Pushes the form box down */
-        margin-bottom: 5vh; /* Floating space at bottom */
+        min-height: auto;
+        margin: 0;
         border-radius: 35px; /* Rounded corners all around since it's floating */
         position: relative; /* So the absolute title is positioned relative to this */
     }
     
     .form-title {
-        position: absolute;
-        top: -120px; /* Pulls the text OUT of the dark box and into the clear image area */
-        left: 0;
+        position: relative;
+        top: 0;
         width: 100%;
         color: #f8fafc;
-        font-size: 38px;
+        font-size: 32px;
         font-weight: 800;
         text-align: center;
-        text-shadow: 0 4px 15px rgba(0,0,0,0.8);
-        margin: 0;
+        margin-bottom: 25px;
     }
     
     .mobile-header {
