@@ -612,115 +612,147 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // Forgot Password Logic
-    const forgotPwdBtn = document.querySelector('.forgot-pwd');
-    if (forgotPwdBtn) {
-        forgotPwdBtn.addEventListener('click', async (e) => {
+    // Linear Forgot Password Logic
+    const forgotPwdLink = document.getElementById('forgot-pwd-link');
+    const fpBackLink = document.getElementById('fp-back-link');
+    const loginFields = document.getElementById('login-fields');
+    const fpFields = document.getElementById('forgot-password-fields');
+    
+    const step1 = document.getElementById('fp-step-1');
+    const step2 = document.getElementById('fp-step-2');
+    const step3 = document.getElementById('fp-step-3');
+    const fpInstruction = document.getElementById('fp-instruction');
+    
+    const btnSendCode = document.getElementById('btn-send-code');
+    const btnVerifyCode = document.getElementById('btn-verify-code');
+    const btnResetPwd = document.getElementById('btn-reset-pwd');
+    
+    let generatedCode = '';
+    let resetEmailTarget = '';
+
+    if (forgotPwdLink) {
+        forgotPwdLink.addEventListener('click', (e) => {
             e.preventDefault();
+            loginFields.style.display = 'none';
+            fpFields.style.display = 'flex';
             
-            if (typeof Swal === 'undefined') {
-                alert("Please wait for the page to fully load.");
-                return;
-            }
-
-            const { value: email } = await Swal.fire({
-                title: 'Reset Password',
-                input: 'email',
-                inputLabel: 'Enter your registered email address',
-                inputPlaceholder: 'user@example.com',
-                showCancelButton: true,
-                confirmButtonColor: '#6366f1',
-                cancelButtonColor: '#334155',
-                background: '#1e293b',
-                color: '#f8fafc',
-                validationMessage: 'Please enter a valid email address'
-            });
-
-            if (email) {
-                let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
-                let userIndex = users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
-                
-                if (userIndex === -1) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Email not found',
-                        text: 'No account is registered with this email address.',
-                        background: '#1e293b',
-                        color: '#f8fafc',
-                        confirmButtonColor: '#6366f1'
-                    });
-                } else if (users[userIndex].auth0) {
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Social Login',
-                        text: 'This email is linked to a Google account. Please use Google to sign in.',
-                        background: '#1e293b',
-                        color: '#f8fafc',
-                        confirmButtonColor: '#6366f1'
-                    });
-                } else {
-                    // Simulate sending an email verification code
-                    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-                    
-                    await Swal.fire({
-                        icon: 'info',
-                        title: 'Email Sent! (Simulation)',
-                        html: `In a real app, an email would be sent to <b>${email}</b>.<br><br>For this demo, your verification code is:<br><b style="font-size: 32px; letter-spacing: 4px; color: #6366f1; display: block; margin-top: 10px;">${verificationCode}</b>`,
-                        background: '#1e293b',
-                        color: '#f8fafc',
-                        confirmButtonColor: '#6366f1',
-                        confirmButtonText: 'I got the code!'
-                    });
-
-                    const { value: enteredCode } = await Swal.fire({
-                        title: 'Verification',
-                        input: 'text',
-                        inputLabel: 'Enter the 6-digit code',
-                        inputPlaceholder: '123456',
-                        showCancelButton: true,
-                        confirmButtonColor: '#6366f1',
-                        cancelButtonColor: '#334155',
-                        background: '#1e293b',
-                        color: '#f8fafc',
-                        inputValidator: (value) => {
-                            if (!value) return 'Please enter the code';
-                            if (value !== verificationCode) return 'Invalid verification code! Try again.';
-                        }
-                    });
-
-                    if (enteredCode === verificationCode) {
-                        const { value: newPassword } = await Swal.fire({
-                            title: 'New Password',
-                            input: 'password',
-                            inputLabel: 'Enter your new password',
-                            inputPlaceholder: 'New password',
-                            showCancelButton: true,
-                            confirmButtonColor: '#6366f1',
-                            cancelButtonColor: '#334155',
-                            background: '#1e293b',
-                            color: '#f8fafc',
-                            inputValidator: (value) => {
-                                if (!value) return 'You need to write something!';
-                                if (value.length < 6) return 'Password must be at least 6 characters!';
-                            }
-                        });
-
-                        if (newPassword) {
-                            users[userIndex].password = await hashPassword(newPassword);
-                            localStorage.setItem('nscc_users', JSON.stringify(users));
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Password Updated!',
-                                text: 'Your password has been successfully reset. You can now log in.',
-                                background: '#1e293b',
-                                color: '#f8fafc',
-                                confirmButtonColor: '#10b981'
-                            });
-                        }
-                    }
-                }
+            step1.style.display = 'flex';
+            step2.style.display = 'none';
+            step3.style.display = 'none';
+            
+            fpInstruction.textContent = 'Enter your email to receive a verification code.';
+            document.getElementById('fp-email').value = '';
+            
+            // On mobile, change the background h1 to Reset Password if it exists
+            const mobileWelcome = document.querySelector('.sign-in-container .mobile-header h1');
+            if (mobileWelcome) {
+                mobileWelcome.dataset.originalText = mobileWelcome.innerHTML;
+                mobileWelcome.innerHTML = 'Reset<br>Password';
             }
         });
     }
-});
 
+    if (fpBackLink) {
+        fpBackLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            fpFields.style.display = 'none';
+            loginFields.style.display = 'flex';
+            
+            const mobileWelcome = document.querySelector('.sign-in-container .mobile-header h1');
+            if (mobileWelcome && mobileWelcome.dataset.originalText) {
+                mobileWelcome.innerHTML = mobileWelcome.dataset.originalText;
+            }
+        });
+    }
+
+    if (btnSendCode) {
+        btnSendCode.addEventListener('click', () => {
+            const email = document.getElementById('fp-email').value.trim();
+            if (!email) {
+                Swal.fire({ icon: 'warning', title: 'Oops', text: 'Please enter your email.', background: '#1e293b', color: '#f8fafc' });
+                return;
+            }
+            
+            let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
+            let userIndex = users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
+            
+            if (userIndex === -1) {
+                Swal.fire({ icon: 'error', title: 'Not Found', text: 'No account registered with this email.', background: '#1e293b', color: '#f8fafc', confirmButtonColor: '#6366f1' });
+            } else if (users[userIndex].auth0) {
+                Swal.fire({ icon: 'info', title: 'Social Login', text: 'This email uses Google/GitHub login.', background: '#1e293b', color: '#f8fafc', confirmButtonColor: '#6366f1' });
+            } else {
+                resetEmailTarget = email;
+                generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+                
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Email Sent! (Simulation)',
+                    html: 'In a real app, an email would be sent to <b>' + email + '</b>.<br><br>For this demo, your verification code is:<br><b style="font-size: 32px; letter-spacing: 4px; color: #6366f1; display: block; margin-top: 10px;">' + generatedCode + '</b>',
+                    background: '#1e293b',
+                    color: '#f8fafc',
+                    confirmButtonColor: '#6366f1'
+                }).then(() => {
+                    step1.style.display = 'none';
+                    step2.style.display = 'flex';
+                    fpInstruction.textContent = 'Enter the 6-digit code sent to your email.';
+                    document.getElementById('fp-code').value = '';
+                });
+            }
+        });
+    }
+
+    if (btnVerifyCode) {
+        btnVerifyCode.addEventListener('click', () => {
+            const code = document.getElementById('fp-code').value.trim();
+            if (!code) {
+                Swal.fire({ icon: 'warning', title: 'Oops', text: 'Please enter the code.', background: '#1e293b', color: '#f8fafc' });
+                return;
+            }
+            if (code !== generatedCode) {
+                Swal.fire({ icon: 'error', title: 'Invalid Code', text: 'The verification code is incorrect. Try again.', background: '#1e293b', color: '#f8fafc', confirmButtonColor: '#ef4444' });
+                return;
+            }
+            
+            // Success
+            step2.style.display = 'none';
+            step3.style.display = 'flex';
+            fpInstruction.textContent = 'Create a new secure password.';
+            document.getElementById('fp-new-password').value = '';
+        });
+    }
+
+    if (btnResetPwd) {
+        btnResetPwd.addEventListener('click', async () => {
+            const newPwd = document.getElementById('fp-new-password').value;
+            if (newPwd.length < 6) {
+                Swal.fire({ icon: 'warning', title: 'Weak Password', text: 'Password must be at least 6 characters.', background: '#1e293b', color: '#f8fafc' });
+                return;
+            }
+            
+            let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
+            let userIndex = users.findIndex(u => u.email.toLowerCase() === resetEmailTarget.toLowerCase());
+            
+            if (userIndex !== -1) {
+                users[userIndex].password = await hashPassword(newPwd);
+                localStorage.setItem('nscc_users', JSON.stringify(users));
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Password Updated!',
+                    text: 'Your password has been successfully reset. You can now log in.',
+                    background: '#1e293b',
+                    color: '#f8fafc',
+                    confirmButtonColor: '#10b981'
+                }).then(() => {
+                    fpFields.style.display = 'none';
+                    loginFields.style.display = 'flex';
+                    const mobileWelcome = document.querySelector('.sign-in-container .mobile-header h1');
+                    if (mobileWelcome && mobileWelcome.dataset.originalText) {
+                        mobileWelcome.innerHTML = mobileWelcome.dataset.originalText;
+                    }
+                });
+            }
+        });
+    }
+
+});
