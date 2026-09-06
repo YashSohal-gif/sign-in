@@ -377,13 +377,13 @@ input:focus {
         flex-shrink: 0;
     }
 
-     .mobile-header h1 {
+    .mobile-header h1 {
         color: #ffffff;
         font-size: 32px;
         font-weight: 800;
-        /* ... */
-    }
-    
+        text-shadow: 0 3px 20px rgba(0,0,0,0.7);
+        margin: 0;
+        line-height: 1.15;
     }
 
     /* Hide the back/top buttons, keep only h1 */
@@ -1427,6 +1427,9 @@ body.light-mode .theme-btn { color: #1e293b; background: rgba(0,0,0,0.1); }
         margin: 0 !important;
         width: 100vw !important;
         max-width: 100vw !important;
+        height: 100vh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
     .dash-welcome-card {
         flex-direction: column;
