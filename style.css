@@ -348,8 +348,8 @@ input:focus {
         transition: left 0.45s ease-in-out;
     }
 
-    .sign-in-container  { left: 0;     z-index: 5; }
-    .sign-up-container  { left: 100vw; z-index: 5; }
+    .sign-in-container  { left: 0; width: 100%; z-index: 5; }
+    .sign-up-container  { left: 100vw; width: 100%; z-index: 5; }
     .auth-container.right-panel-active .sign-in-container { left: -100vw; }
     .auth-container.right-panel-active .sign-up-container { left: 0; }
 
@@ -367,7 +367,7 @@ input:focus {
 
     .mobile-header h1 {
         color: #ffffff;
-        font-size: 42px;
+        font-size: 32px;
         font-weight: 800;
         text-shadow: 0 3px 20px rgba(0,0,0,0.7);
         margin: 0;
