@@ -355,8 +355,8 @@ input:focus {
 
     .sign-in-container  { left: 0 !important; width: 100% !important; z-index: 5; }
     .sign-up-container  { left: 100vw !important; width: 100% !important; z-index: 5; }
-    .auth-container.right-panel-active .sign-in-container { left: -100vw; }
-    .auth-container.right-panel-active .sign-up-container { left: 0; }
+    .auth-container.right-panel-active .sign-in-container { left: -100vw !important; }
+    .auth-container.right-panel-active .sign-up-container { left: 0 !important; }
 
     /* ---- TOP HALF: Welcome text over the mountain ---- */
     .mobile-header {
@@ -407,8 +407,8 @@ input:focus {
         overflow: visible;
     }
     
-    /* Hide any leftover hidden elements that cause a gap at top of form */
-    form > h2, form > span, form > p.desktop-only { display: none !important; margin: 0 !important; padding: 0 !important; }
+    /* Only hide the mobile-only form-title h3 (already done), not the desktop h2 */
+    form > h3.form-title { display: none !important; margin: 0 !important; }
 
     /* Inputs */
     .input-group { width: 100%; margin: 7px 0; position: relative; }
