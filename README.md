@@ -1,9 +1,9 @@
 # NSCC SRM - Technical Task 1 (1st Year)
 
-## 📌 Project Overview
+##  Project Overview
 This project is an interactive, 3D-styled Signup Form and User Dashboard created for the NSCC Technical Task Round. It features live input validation, client-side data persistence using `localStorage`, secure password hashing using the Web Crypto API, and a fully responsive soft 3D UI (Neo-brutalism/Claymorphism).
 
-## 🚀 Features Implemented
+## 🚀Features Implemented
 - **Interactive UI**: Elements feature 3D shadows and transform states on hover, focus, and click. Invalid inputs trigger a custom "shake" animation.
 - **Client-Side Validation**:
   - Username: Cannot be empty (requires at least 3 characters).
@@ -13,12 +13,12 @@ This project is an interactive, 3D-styled Signup Form and User Dashboard created
 - **Data Persistence**: Successful signups are saved dynamically in `localStorage`.
 - **Live Dashboard Table**: Displays the Username, Email, and Hashed Password dynamically. 
 
-## ⭐ Brownie Points / Extra Features
+##  Brownie Points / Extra Features
 - **Delete Functionality**: An interactive delete button added to every row in the dashboard to remove entries dynamically from both the UI and `localStorage`.
 - **Basic XSS Protection**: Escapes HTML characters before rendering them into the dashboard to prevent cross-site scripting attacks.
 - **Micro-interactions**: Enhanced UX via visual cues such as button presses, error states, and success pops.
 
-## 🛠 How to Run the Project
+## How to Run the Project
 Since this is a vanilla HTML/CSS/JS project, there are no complicated installation steps!
 
 ### Option 1: Live Server (Recommended)
