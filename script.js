@@ -537,19 +537,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const score = baseScore - (index * 850) + (uname.length * 25);
                 
                 const shortHash = user.password ? user.password.substring(0, 16) + '...' : 'OAuth Login';
-                tr.innerHTML = 
+                tr.innerHTML = `
                     <td class="td-member">
                         <div class="user-cell">
-                            <div class="user-avatar"></div>
+                            <div class="user-avatar">${initial}</div>
                             <div class="user-info">
-                                <span class="user-name"></span>
+                                <span class="user-name">${escapeHTML(uname)}</span>
                             </div>
                         </div>
                     </td>
-                    <td style="color: #cbd5e1; font-size: 14px;"></td>
-                    <td style="font-family: monospace; font-size: 13px; color: #94a3b8; letter-spacing: 1px;"></td>
-                    <td class="td-actions"><button class="btn-delete" onclick="deleteUser('')" title="Delete User"><i class="fas fa-trash"></i></button></td>
-                ;
+                    <td style="color: #cbd5e1; font-size: 14px;">${escapeHTML(uemail)}</td>
+                    <td style="font-family: monospace; font-size: 13px; color: #94a3b8; letter-spacing: 1px;">${shortHash}</td>
+                    <td class="td-actions"><button class="btn-delete" onclick="deleteUser('${escapeHTML(uemail)}')" title="Delete User"><i class="fas fa-trash"></i></button></td>
+                `;
                 userTbody.appendChild(tr);
             });
         }
@@ -791,3 +791,4 @@ window.deleteUser = function(email) {
         }
     });
 };
+
