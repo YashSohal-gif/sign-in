@@ -3,7 +3,7 @@
 ##  Project Overview
 This project is an interactive, 3D-styled Signup Form and User Dashboard created for the NSCC Technical Task Round. It features live input validation, client-side data persistence using `localStorage`, secure password hashing using the Web Crypto API, and a fully responsive soft 3D UI (Neo-brutalism/Claymorphism).
 
-## 🚀Features Implemented
+## Features Implemented
 - **Interactive UI**: Elements feature 3D shadows and transform states on hover, focus, and click. Invalid inputs trigger a custom "shake" animation.
 - **Client-Side Validation**:
   - Username: Cannot be empty (requires at least 3 characters).
@@ -34,7 +34,7 @@ Since this is a vanilla HTML/CSS/JS project, there are no complicated installati
 ### Environment Setup
 No external libraries, frameworks, or environment variables are required!
 
-## 🧠 Concepts Learned / Utilized
+## Concepts Utilized
 - **Web Crypto API (`crypto.subtle.digest`)**: Learned how to implement asynchronous hashing (SHA-256) entirely on the client-side without relying on external libraries like bcrypt or CryptoJS.
 - **DOM Manipulation & State**: Efficiently updating the DOM based on the current state of `localStorage`.
 - **Advanced CSS**: Utilizing multiple inset/outset `box-shadow` layers and CSS `transform` for 3D interactions and animations.
