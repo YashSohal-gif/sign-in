@@ -348,13 +348,8 @@ input:focus {
         transition: left 0.45s ease-in-out;
     }
 
-<<<<<<< HEAD
     .sign-in-container  { left: 0 !important; width: 100% !important; z-index: 5; }
     .sign-up-container  { left: 100vw !important; width: 100% !important; z-index: 5; }
-=======
-    .sign-in-container  { left: 0; width: 100%; z-index: 5; }
-    .sign-up-container  { left: 0; width: 100%; z-index: 5; }
->>>>>>> fbda18f5fe5d94933d951b5b53a6193216574049
     .auth-container.right-panel-active .sign-in-container { left: -100vw; }
     .auth-container.right-panel-active .sign-up-container { left: 0; }
 
