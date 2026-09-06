@@ -756,3 +756,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+window.deleteUser = function(email) {
+    Swal.fire({
+        title: 'Delete User?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        background: '#1e293b',
+        color: '#fff',
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6366f1',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
+            users = users.filter(u => u.email !== email);
+            localStorage.setItem('nscc_users', JSON.stringify(users));
+            Swal.fire({
+                title: 'Deleted!',
+                text: 'User has been removed.',
+                icon: 'success',
+                background: '#1e293b',
+                color: '#fff',
+                confirmButtonColor: '#6366f1'
+            }).then(() => {
+                window.location.reload();
+            });
+        }
+    });
+};
