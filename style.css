@@ -309,21 +309,18 @@ input:focus {
     .desktop-only { display: none !important; }
     .mobile-only  { display: block; }
 
-    /* Mountain image fills entire phone screen */
+    /* Mountain image on html — sits behind everything, no stacking issues */
+    html {
+        background: url("bg.jpg") center / cover no-repeat;
+        background-attachment: scroll;
+        min-height: 100%;
+    }
     body {
-        background: #0f172a;
+        background: transparent;
         display: block;
         min-height: 100vh;
         overflow-y: auto;
         overflow-x: hidden;
-    }
-    /* Fixed bg pseudo-element — works on iOS Safari unlike background-attachment:fixed */
-    body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background: url("bg.jpg") center / cover no-repeat;
-        z-index: -1;
     }
 
     .auth-container {
