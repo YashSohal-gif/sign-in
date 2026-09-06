@@ -759,27 +759,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.deleteUser = function(email) {
     Swal.fire({
-        title: 'Delete User?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
+        html: `
+            <div style="margin-bottom: 20px; margin-top: 10px;">
+                <div style="background: rgba(239, 68, 68, 0.1); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 1px solid rgba(239, 68, 68, 0.2);">
+                    <i class="fas fa-trash-alt" style="color: #ef4444; font-size: 24px;"></i>
+                </div>
+            </div>
+            <h3 style="color: #f8fafc; font-weight: 600; font-size: 22px; margin: 0 0 8px 0; font-family: 'Inter', sans-serif;">Delete User</h3>
+            <p style="color: #94a3b8; font-size: 15px; margin: 0;">This action cannot be undone.</p>
+        `,
         showCancelButton: true,
-        background: '#1e293b',
-        color: '#fff',
-        confirmButtonColor: '#ef4444',
-        cancelButtonColor: '#6366f1',
-        confirmButtonText: 'Yes, delete it!'
+        showConfirmButton: true,
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel',
+        background: 'rgba(15, 23, 42, 0.85)',
+        backdrop: 'rgba(0, 0, 0, 0.6)',
+        customClass: {
+            popup: 'minimal-popup',
+            confirmButton: 'minimal-btn minimal-btn-danger',
+            cancelButton: 'minimal-btn minimal-btn-secondary',
+            actions: 'minimal-actions'
+        },
+        buttonsStyling: false,
+        showClass: { popup: 'animate__animated animate__zoomIn animate__faster' },
+        hideClass: { popup: 'animate__animated animate__zoomOut animate__faster' }
     }).then((result) => {
         if (result.isConfirmed) {
             let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
             users = users.filter(u => u.email !== email);
             localStorage.setItem('nscc_users', JSON.stringify(users));
+            
             Swal.fire({
-                title: 'Deleted!',
-                text: 'User has been removed.',
-                icon: 'success',
-                background: '#1e293b',
-                color: '#fff',
-                confirmButtonColor: '#6366f1'
+                html: `
+                    <div style="margin-bottom: 20px; margin-top: 10px;">
+                        <div style="background: rgba(16, 185, 129, 0.1); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 1px solid rgba(16, 185, 129, 0.2);">
+                            <i class="fas fa-check" style="color: #10b981; font-size: 28px;"></i>
+                        </div>
+                    </div>
+                    <h3 style="color: #f8fafc; font-weight: 600; font-size: 22px; margin: 0 0 8px 0; font-family: 'Inter', sans-serif;">Deleted</h3>
+                    <p style="color: #94a3b8; font-size: 15px; margin: 0;">User has been removed.</p>
+                `,
+                showConfirmButton: true,
+                confirmButtonText: 'Okay',
+                background: 'rgba(15, 23, 42, 0.85)',
+                backdrop: 'rgba(0, 0, 0, 0.6)',
+                customClass: {
+                    popup: 'minimal-popup',
+                    confirmButton: 'minimal-btn minimal-btn-primary',
+                    actions: 'minimal-actions'
+                },
+                buttonsStyling: false,
+                timer: 2000
             }).then(() => {
                 window.location.reload();
             });
