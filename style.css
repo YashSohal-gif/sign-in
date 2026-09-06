@@ -349,7 +349,7 @@ input:focus {
     }
 
     .sign-in-container  { left: 0; width: 100%; z-index: 5; }
-    .sign-up-container  { left: 100vw; width: 100%; z-index: 5; }
+    .sign-up-container  { left: 0; width: 100%; z-index: 5; }
     .auth-container.right-panel-active .sign-in-container { left: -100vw; }
     .auth-container.right-panel-active .sign-up-container { left: 0; }
 
