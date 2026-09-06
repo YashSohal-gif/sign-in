@@ -311,11 +311,19 @@ input:focus {
 
     /* Mountain image fills entire phone screen */
     body {
-        background: url("bg.jpg") center / cover no-repeat fixed;
+        background: #0f172a;
         display: block;
         min-height: 100vh;
         overflow-y: auto;
         overflow-x: hidden;
+    }
+    /* Fixed bg pseudo-element — works on iOS Safari unlike background-attachment:fixed */
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: url("bg.jpg") center / cover no-repeat;
+        z-index: -1;
     }
 
     .auth-container {
@@ -348,7 +356,7 @@ input:focus {
         opacity: 1 !important;
         animation: none !important;
         transform: none !important;
-        transition: left 0.45s ease-in-out;
+        transition: left 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         padding-bottom: 30px;
         box-sizing: border-box;
     }
