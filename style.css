@@ -321,11 +321,13 @@ input:focus {
     .auth-container {
         width: 100vw;
         min-height: 100vh;
+        height: auto;
         background: transparent;
         border: none;
         border-radius: 0;
         box-shadow: none;
-        overflow: hidden;
+        overflow-x: clip;
+        overflow-y: visible;
         position: relative;
     }
 
@@ -335,6 +337,7 @@ input:focus {
     .form-container {
         width: 100vw;
         min-height: 100vh;
+        height: auto;
         position: absolute;
         top: 0;
         left: 0;
@@ -346,6 +349,8 @@ input:focus {
         animation: none !important;
         transform: none !important;
         transition: left 0.45s ease-in-out;
+        padding-bottom: 30px;
+        box-sizing: border-box;
     }
 
     .sign-in-container  { left: 0 !important; width: 100% !important; z-index: 5; }
@@ -384,21 +389,26 @@ input:focus {
     /* ---- BOTTOM HALF: Frosted glass form card ---- */
     form {
         width: calc(100% - 32px) !important;
-        margin: 0 16px 30px 16px !important;
+        margin: 0 16px 0 16px !important;
         flex-shrink: 0;
+        height: auto;
         background: rgba(10, 18, 40, 0.68);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         border: 1px solid rgba(255, 255, 255, 0.18);
         border-radius: 26px;
-        padding: 30px 22px 28px 22px;
+        padding: 22px 22px 28px 22px;
         box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
         box-sizing: border-box;
+        overflow: visible;
     }
+    
+    /* Hide any leftover hidden elements that cause a gap at top of form */
+    form > h2, form > span, form > p.desktop-only { display: none !important; margin: 0 !important; padding: 0 !important; }
 
     /* Inputs */
     .input-group { width: 100%; margin: 7px 0; position: relative; }
