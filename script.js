@@ -549,6 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </td>
                     <td class="td-class"><span class="class-badge class-${playerClass.toLowerCase()}">${playerClass}</span></td>
                     <td class="td-status"><span class="status-badge">Online</span></td>
+                    <td class="td-actions"><button class="btn-delete" onclick="deleteUser('')" title="Delete User"><i class="fas fa-trash"></i></button></td>
                 `;
                 userTbody.appendChild(tr);
             });
@@ -762,3 +763,32 @@ app.post('/reset-password', async (req, res) => {
 
   res.status(200).json({ message: "Password has been reset successfully." });
 });
+
+window.deleteUser = function(email) {
+    Swal.fire({
+        title: 'Delete User?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        background: '#1e293b',
+        color: '#fff',
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6366f1',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let users = JSON.parse(localStorage.getItem('nscc_users')) || [];
+            users = users.filter(u => u.email !== email);
+            localStorage.setItem('nscc_users', JSON.stringify(users));
+            window.loadUsersIntoDashboard();
+            Swal.fire({
+                title: 'Deleted!',
+                text: 'User has been removed.',
+                icon: 'success',
+                background: '#1e293b',
+                color: '#fff',
+                confirmButtonColor: '#6366f1'
+            });
+        }
+    });
+};

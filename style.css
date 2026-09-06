@@ -1606,3 +1606,22 @@ button.ghost:active {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
+
+.th-actions, .td-actions {
+    text-align: center;
+}
+.btn-delete {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.btn-delete:hover {
+    background: rgba(239, 68, 68, 0.4);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+    transform: translateY(-2px);
+}
