@@ -659,33 +659,64 @@ document.addEventListener('DOMContentLoaded', () => {
                         confirmButtonColor: '#6366f1'
                     });
                 } else {
-                    const { value: newPassword } = await Swal.fire({
-                        title: 'New Password',
-                        input: 'password',
-                        inputLabel: 'Enter your new password',
-                        inputPlaceholder: 'New password',
+                    // Simulate sending an email verification code
+                    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+                    
+                    await Swal.fire({
+                        icon: 'info',
+                        title: 'Email Sent! (Simulation)',
+                        html: `In a real app, an email would be sent to <b>${email}</b>.<br><br>For this demo, your verification code is:<br><b style="font-size: 32px; letter-spacing: 4px; color: #6366f1; display: block; margin-top: 10px;">${verificationCode}</b>`,
+                        background: '#1e293b',
+                        color: '#f8fafc',
+                        confirmButtonColor: '#6366f1',
+                        confirmButtonText: 'I got the code!'
+                    });
+
+                    const { value: enteredCode } = await Swal.fire({
+                        title: 'Verification',
+                        input: 'text',
+                        inputLabel: 'Enter the 6-digit code',
+                        inputPlaceholder: '123456',
                         showCancelButton: true,
                         confirmButtonColor: '#6366f1',
                         cancelButtonColor: '#334155',
                         background: '#1e293b',
                         color: '#f8fafc',
                         inputValidator: (value) => {
-                            if (!value) return 'You need to write something!';
-                            if (value.length < 6) return 'Password must be at least 6 characters!';
+                            if (!value) return 'Please enter the code';
+                            if (value !== verificationCode) return 'Invalid verification code! Try again.';
                         }
                     });
 
-                    if (newPassword) {
-                        users[userIndex].password = await hashPassword(newPassword);
-                        localStorage.setItem('nscc_users', JSON.stringify(users));
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Password Updated!',
-                            text: 'Your password has been successfully reset. You can now log in.',
+                    if (enteredCode === verificationCode) {
+                        const { value: newPassword } = await Swal.fire({
+                            title: 'New Password',
+                            input: 'password',
+                            inputLabel: 'Enter your new password',
+                            inputPlaceholder: 'New password',
+                            showCancelButton: true,
+                            confirmButtonColor: '#6366f1',
+                            cancelButtonColor: '#334155',
                             background: '#1e293b',
                             color: '#f8fafc',
-                            confirmButtonColor: '#10b981'
+                            inputValidator: (value) => {
+                                if (!value) return 'You need to write something!';
+                                if (value.length < 6) return 'Password must be at least 6 characters!';
+                            }
                         });
+
+                        if (newPassword) {
+                            users[userIndex].password = await hashPassword(newPassword);
+                            localStorage.setItem('nscc_users', JSON.stringify(users));
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Password Updated!',
+                                text: 'Your password has been successfully reset. You can now log in.',
+                                background: '#1e293b',
+                                color: '#f8fafc',
+                                confirmButtonColor: '#10b981'
+                            });
+                        }
                     }
                 }
             }
