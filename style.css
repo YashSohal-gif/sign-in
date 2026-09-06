@@ -17,7 +17,7 @@ body {
 }
 
 .mobile-only, .mobile-header {
-    display: none;
+    display: flex;
 }
 
 h1, h2 {
