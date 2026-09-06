@@ -536,21 +536,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 const baseScore = 15000;
                 const score = baseScore - (index * 850) + (uname.length * 25);
                 
-                tr.innerHTML = `
-                    <td class="td-rank">#${index + 1}</td>
+                const shortHash = user.password ? user.password.substring(0, 16) + '...' : 'OAuth Login';
+                tr.innerHTML = 
                     <td class="td-member">
                         <div class="user-cell">
-                            <div class="user-avatar">${initial}</div>
+                            <div class="user-avatar"></div>
                             <div class="user-info">
-                                <span class="user-name">${escapeHTML(uname)}</span>
-                                <span class="user-email-sub">${escapeHTML(uemail)}</span>
+                                <span class="user-name"></span>
                             </div>
                         </div>
                     </td>
-                    <td class="td-class"><span class="class-badge class-${playerClass.toLowerCase()}">${playerClass}</span></td>
-                    <td class="td-status"><span class="status-badge">Online</span></td>
+                    <td style="color: #cbd5e1; font-size: 14px;"></td>
+                    <td style="font-family: monospace; font-size: 13px; color: #94a3b8; letter-spacing: 1px;"></td>
                     <td class="td-actions"><button class="btn-delete" onclick="deleteUser('')" title="Delete User"><i class="fas fa-trash"></i></button></td>
-                `;
+                ;
                 userTbody.appendChild(tr);
             });
         }
